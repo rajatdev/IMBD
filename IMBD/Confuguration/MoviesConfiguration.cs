@@ -19,6 +19,12 @@ namespace IMBD.Confuguration
             this.Property(p => p.PosterId).HasColumnName("PosterId");
             this.Property(p => p.ProducerId).HasColumnName("ProducerId");
             this.Property(p => p.ReleaseDate).HasColumnName("ReleaseDate");
+            this.HasKey(e => e.Id);
+
+            this.HasMany(c => c.Actor_movie)
+               .WithRequired()
+               .HasForeignKey(c => c.MovieId);
+              this.HasRequired(s => s.producer);
 
         }
     }

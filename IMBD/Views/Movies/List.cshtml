@@ -1,4 +1,4 @@
-﻿@model IMBD.ViewModel.ListMovieViewModel
+﻿@model List<IMBD.Models.Movies>
 @using IMBD.Models
 
 @{
@@ -14,42 +14,33 @@
         <th><h1><b>Producer</b></h1></th>
         <th><h1><b>Actors</b></h1></th>
     </tr>
-   
-        @foreach (Movies movie in @Model.Vmmovies)
-        {
-            
-            <tr>
-                <td>@Html.ActionLink(movie.Name, "Details", new { id = movie.Id })</td>
-                <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
-                <td>@movie.Plot</td>
-                @foreach(Producers prod in @Model.Vmproducer)
-                {
-                    if (prod.Id == movie.ProducerId)
-                    {
-                        <td>@prod.Name</td>
-                    }
-                }
-                @foreach(Actor_Movies am in @Model.Vmactor_movies)
-                {
-                        
-                            if (am.MovieId == movie.Id)
-                                {
-                                
-                                foreach(Actors act in @Model.Vmactors)
-                                    {
-                                     
-                                        if (act.Id == am.ActorId) 
-                                        {
-                                            <td>  @act.Name</td>
-                                        }
-                                      
-                                    }
 
-                                 }
-                                
-                }
-                <td>tth</td>
-           </tr>
-        }
-   
+    @foreach (Movies movie in @Model)
+    {
+
+        <tr>
+            <td>@Html.ActionLink(movie.Name, "Details", new { id = movie.Id })</td>
+            <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
+            <td>@movie.Plot</td>
+             <td>@movie.producer.Name</td>
+ 
+            @foreach (Actor_Movies am in movie.Actor_movie)
+            {
+
+               
+
+                 /*   foreach (Actors act in am.actor)
+                    {
+
+                            <td>  @act.Name</td>
+
+                    }*/
+
+                
+
+            }
+            <td>tth</td>
+        </tr>
+    }
+
 </table>

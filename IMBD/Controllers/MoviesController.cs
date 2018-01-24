@@ -44,35 +44,35 @@ namespace IMBD.Controllers
 
         public ActionResult List()
         {
-            /*  var movie = new Movies() { Id = 12, Mname = "Movies Name" };
-              var producer = new Producers() { Pname = "Producers Name" };*/
 
-            /* var movie = new List<Movies>
-             {
-                 new Movies { Name="Movie 1"},
-                 new Movies { Name="Movie 2" }
-             };*/
             ImdbConfiguration conf = new ImdbConfiguration();
-            List<Movies> movie = conf.Movies.ToList();
-            List<Producers> producer = conf.Producers.ToList();
-            List<Actors> actor = conf.Actors.ToList();
-            List<Actor_Movies> actor_movie = conf.Actor_Movies.ToList();
-            var viewModel = new ListMovieViewModel
-            {
-                Vmmovies = movie,
-                Vmactors=actor,
-                Vmproducer=producer,
-                Vmactor_movies=actor_movie
-            
-            };
+            List<Movies> movies = conf.Movies.ToList();
 
-            //  ViewData["Movie"] = movie;
-            //   ViewBag.Movie = movie;
-            return View(viewModel);
-            //  return View();
-
-           // return View();
+            return View(movies);
+           
         }
+
+
+
+        public ActionResult Add()
+        {
+            ImdbConfiguration conf = new ImdbConfiguration();
+            List<Actors> actor = conf.Actors.ToList();
+
+            var viewModel = new AddCustomerViewModel
+            {
+                Act = actor
+            };
+            return View(viewModel);
+        }
+
+
+        public ActionResult Create(AddCustomerViewModel viewModel)
+        {
+            return View();
+        }
+
+
         // GET: Movies
         public ActionResult Index()
         {

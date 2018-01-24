@@ -8,7 +8,9 @@ namespace IMBD.Models
     public class Actor_Movies
     {
         public int Id { get; set; }
-        public virtual int MovieId { get; set; }
-        public virtual int ActorId { get; set; }
+        public int MovieId { get; set; }
+        public int ActorId { get; set; }
+      //  public virtual ICollection<Movies> movie { get; set; }
+      //  public virtual ICollection<Actors> Actors { get; set; }
     }
 }

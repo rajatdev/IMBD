@@ -34,8 +34,39 @@ namespace IMBD.Confuguration
             modelBuilder.Entity<Producers>().ToTable("Producers");
             modelBuilder.Entity<Actor_Movies>().ToTable("Actor_Movies");
 
+
+
+            /*    modelBuilder.Entity<Movies>()
+                    .HasMany<Actor_Movies>(s => s.Actor_movie)
+                    .WithMany(c => c.movie);*/
+
+           
+
+
+            // modelBuilder.Entity<Actor_Movies>().HasKey(e => e.ActorId);
+
+       /*     modelBuilder.Entity<Actor_Movies>()
+              .HasMany(c => c.Actors)
+              .WithRequired()
+              .HasForeignKey(c => c.Id);
+
+            /* modelBuilder.Entity<Actor_Movies>()
+               .HasMany(c => c.actor)
+               .WithRequired()
+               .HasForeignKey(c => c.Id);
+             /*   modelBuilder.Entity<Actor_Movies>()
+                .HasKey(e => e.Id);
+
+                modelBuilder.Entity<Actor_Movies>()
+               .HasMany(e => e.actor)
+               .WithRequired()
+               .HasForeignKey(c => c.Id);*/
+
+
+
+
             //foreign key
-           // modelBuilder.Entity<Movies>().HasMany<Actor_Movies>(s => s.Id);
+            // modelBuilder.Entity<Movies>().HasMany<Actor_Movies>(s => s.Id);
         }
 
     }

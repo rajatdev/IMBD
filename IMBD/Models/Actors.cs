@@ -12,5 +12,6 @@ namespace IMBD.Models
         public string Sex { get; set; }
         public DateTime Dob { get; set; }
         public string Bio { get; set; }
+       // public virtual ICollection<Actor_Movies> Actor_movie { get; set; }  
     }
 }

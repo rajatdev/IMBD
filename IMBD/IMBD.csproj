@@ -164,6 +164,7 @@
     <Compile Include="Models\Movies.cs" />
     <Compile Include="Models\Producers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AddCustomerViewModel.cs" />
     <Compile Include="ViewModel\ListMovieViewModel.cs" />
     <Compile Include="ViewModel\ViewMovieViewModel.cs" />
   </ItemGroup>
@@ -208,6 +209,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Movies\View.cshtml" />
     <Content Include="Views\Movies\List.cshtml" />
+    <Content Include="Views\Movies\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
