@@ -1,0 +1,27 @@
+﻿@model IMBD.ViewModel.ViewMovieViewModel
+
+@{
+    ViewBag.Title = "ViewMovie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewMovie</h2>
+
+<h2>@Model.Vmmovie.Name</h2>
+<h2>@Model.Vmproducer.Name</h2>
+@if (Model.Vmactors.Count == 0)
+{
+    <text>No one has Acted in this movie</text>
+}
+else
+{
+    <ul>
+        @foreach (var actor in Model.Vmactors)
+        {
+            <li>@actor.Name</li>
+        }
+
+    </ul>
+}
+
+
