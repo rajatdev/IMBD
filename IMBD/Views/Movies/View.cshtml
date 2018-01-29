@@ -1,4 +1,4 @@
-﻿@model IMBD.ViewModel.ViewMovieViewModel
+﻿@model IMBD.Models.Movies
 
 @{
     ViewBag.Title = "ViewMovie";
@@ -7,18 +7,18 @@
 
 <h2>ViewMovie</h2>
 
-<h2>@Model.Vmmovie.Name</h2>
-<h2>@Model.Vmproducer.Name</h2>
-@if (Model.Vmactors.Count == 0)
+<h2>@Model.Name</h2>
+<h2>@Model.producer.Name</h2>
+@if (Model.Actor_movie.Count == 0)
 {
     <text>No one has Acted in this movie</text>
 }
 else
 {
     <ul>
-        @foreach (var actor in Model.Vmactors)
+        @foreach (var actor in Model.Actor_movie)
         {
-            <li>@actor.Name</li>
+            <li>@actor.Id</li>
         }
 
     </ul>

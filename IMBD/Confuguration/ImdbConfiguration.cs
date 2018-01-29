@@ -11,6 +11,8 @@ namespace IMBD.Confuguration
     {
         public ImdbConfiguration() : base("Data Source=LAPTOP-AC4IQ5T2;Initial Catalog=IMDB;Integrated Security=True")
         {
+           // Database.SetInitializer<ImdbConfiguration>(new CreateDatabaseIfNotExists<ImdbConfiguration>());
+
         }
         public DbSet<Actors> Actors { get; set; }
         public DbSet<Movies> Movies { get; set; }

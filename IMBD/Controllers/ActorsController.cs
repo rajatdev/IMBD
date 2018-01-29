@@ -9,45 +9,27 @@ using IMBD.Confuguration;
 
 namespace IMBD.Controllers
 {
-    public class MoviesController : Controller
+    public class ActorsController : Controller
     {
         public ActionResult View(int id)
         {
-            /*  var movie = new Movies() { Id = 12, Name = "Movies Name" };
-              var producer = new Producers() { Name = "Producers Name" };
-
-              var actor = new List<Actors>
-              {
-                  new Actors { Name="Actor 1"},
-                  new Actors { Name="Actor 2" }
-              };*/
             ImdbConfiguration conf = new ImdbConfiguration();
-            List<Movies> movies = conf.Movies.ToList();
+            List<Actors> actors = conf.Actors.ToList();
 
-            Movies mv = new Movies();
-            
-            foreach(Movies m in movies)
+            Actors ac = new Actors();
+
+            foreach (Actors a in actors)
             {
-                if (id == m.Id)
+                if (id == a.Id)
                 {
-                    mv = m;
+                    ac = a;
                     break;
                 }
             }
 
-         /*   var viewModel = new ViewMovieViewModel
-            {
-                Vmmovie = movie,
-                Vmactors = actor,
-                Vmproducer=producer
-            };*/
+            return View(ac);
+           
 
-            //  ViewData["Movie"] = movie;
-            //   ViewBag.Movie = movie;
-            return View(mv);
-            //  return View();
-
-           // return View();
         }
 
 
@@ -55,28 +37,20 @@ namespace IMBD.Controllers
         {
 
             ImdbConfiguration conf = new ImdbConfiguration();
-            List<Movies> movies = conf.Movies.ToList();
+            List<Actors> actors = conf.Actors.ToList();
 
-            return View(movies);
-           
+            return View(actors);
+
         }
 
 
 
         public ActionResult Add()
         {
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Actors> actor = conf.Actors.ToList();
-            List<Producers> produc = conf.Producers.ToList();
-
-         /*   var viewModel = new AddCustomerViewModel
-            {
-                Act = actor
-            };*/
-            AddMovie mov = new AddMovie();
-            mov.Actors = actor;
-            mov.Prod = produc;
-            return View(mov);
+            //ImdbConfiguration conf = new ImdbConfiguration();
+            Actors actor = new Actors();
+            
+            return View(actor);
         }
 
 
@@ -91,7 +65,7 @@ namespace IMBD.Controllers
         [HttpPost]
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -109,41 +83,28 @@ namespace IMBD.Controllers
 
         // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(AddMovie vm)
+        public ActionResult Create(Actors vm)
         {
             try
             {
-                String s = vm.Name;
-
-              //  DBInit.Init x = new DBInit.Init();
-              //  Movies m = new Movies() { Name = vm.Name, ReleaseDate = vm.ReleaseDate, Plot = vm.Plot, ProducerId = vm.ProducerId };
+                
                 using (var context = new ImdbConfiguration())
                 {
-                    var mov = new Movies() {
-                        Name = vm.Name,
-                        ReleaseDate = vm.ReleaseDate,
-                        Plot = vm.Plot,
-                        PosterId=123,
-                        ProducerId = vm.producer };
-                    context.Movies.Add(mov);
-                    context.SaveChanges();
-                    foreach (int i in vm.ActorIds)
+                    var act = new Actors()
                     {
-                        var actor_mov = new Actor_Movies()
-                        {
-                            MovieId = mov.Id,
-                            ActorId = i
-                        };
-                        context.Actor_Movies.Add(actor_mov);
-                    }
+                        Name = vm.Name,
+                        Bio = vm.Bio,
+                        Dob = vm.Dob,
+                        Sex = vm.Sex,
+                    };
+                    context.Actors.Add(act);
                     context.SaveChanges();
-                   
-                   
+
                 }
 
                 //cont.Movies.Add(std);
                 // TODO: Add insert logic here
-               
+
                 return RedirectToAction("Add");
             }
             catch

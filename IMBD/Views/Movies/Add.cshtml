@@ -1,34 +1,57 @@
-﻿@model IMBD.ViewModel.AddCustomerViewModel
+﻿@model IMBD.Models.AddMovie
+@using IMBD.Models
 @{
+    /**/
+
     ViewBag.Title = "Add";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>AddMovies</h2>
 
-@using (Html.BeginForm("Create", "movies"))
+@using (Html.BeginForm("create", "movies/create"))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.mo.Name)
-        @Html.TextBoxFor(m => m.mo.Name, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.mo.Plot)
-        @Html.TextBoxFor(m => m.mo.Plot, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Plot)
+        @Html.TextBoxFor(m => m.Plot, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.mo.producer)
-        @Html.TextBoxFor(m => m.mo.producer, new { @class = "form-control" })
+        <label for="Producers">Add Actors</label>
+        @Html.LabelFor(m => m.Prod)
+        @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.mo.ReleaseDate)
-        @Html.TextBoxFor(m => m.mo.ReleaseDate, new { @class = "form-control" })
+        @Html.LabelFor(m => m.ReleaseDate)
+        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "form-control" })
     </div>
 
+  /*  <div class="form-group">
+        <label for="Actors">Add Actors</label>
+        @Html.LabelFor(m => m.Actors)
+        @Html.DropDownListFor(m => m.actor, new MultiSelectList(Model.Actors, "Id", "Name"), "Select Actors", new { @class = "form-control", Multiple = "multiple" })
+    </div>*/
+
     <div class="form-group">
-        <label for="Act">Add Actors</label>
-        @Html.DropDownListFor(m => m.Act,new SelectList(Model.Act,"Id","Name"),"Select Actors", new { @class = "form-control" })
+        @Html.LabelFor(m => m.Actors)
+        @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { id = "list1", Multiple = "multiple" })
     </div>
+
+    // <button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title="Actors"><span class="multiselect-selected-text">None selected</span> <b class="caret"></b></button>
+
+    /* <div class="form-control">
+     <SELECT name="Actr">
+         @foreach (Actors actor in @Model.Actors)
+                     {
+                         @Html.ListBoxFor(m => m.actor, new SelectList(Model.Actors, "Id", "Name"), "Select Actors", SelectionMode = "multiple")
+
+                         //<option value=@actor.Name>@actor.Name</option>
+                     }
+     </SELECT>
+ </div>*/
 
     <button type="submit" class="btn btn-primary">Save</button>
 }

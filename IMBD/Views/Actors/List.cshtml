@@ -1,0 +1,28 @@
+﻿@model List<IMBD.Models.Actors>
+@using IMBD.Models
+
+@{
+    ViewBag.Title = "Actors List";
+}
+
+<h2>Actors List</h2>
+<table border="1">
+    <tr>
+        <th><h1><b>Actor name</b></h1></th>
+        <th><h1><b>Bio</b></h1></th>
+        <th><h1><b>Date Of Birth</b></h1></th>
+        <th><h1><b>Sex</b></h1></th>
+    </tr>
+
+    @foreach (Actors actor in @Model)
+    {
+
+    <tr>
+        <td>@Html.ActionLink(actor.Name, "view", new { id = actor.Id })</td>
+        <td>@actor.Bio</td>
+        <td>@actor.Dob</td>
+        <td>@actor.Sex</td>
+    </tr>
+    }
+
+</table>
