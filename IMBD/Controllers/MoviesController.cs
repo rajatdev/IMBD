@@ -61,11 +61,15 @@ namespace IMBD.Controllers
            
         }
 
-
+        public ActionResult PopUp()
+        {
+            return View();
+        }
 
         public ActionResult Add()
         {
             ImdbConfiguration conf = new ImdbConfiguration();
+            List<Actor_Movies> dsf = conf.Actor_Movies.ToList();
             List<Actors> actor = conf.Actors.ToList();
             List<Producers> produc = conf.Producers.ToList();
 

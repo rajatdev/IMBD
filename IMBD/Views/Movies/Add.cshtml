@@ -3,12 +3,16 @@
 @{
     /**/
 
+    /**/
+
     ViewBag.Title = "Add";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>AddMovies</h2>
 
+
+<script src="~/Scripts/jquery-1.12.4.js"></script>
 @using (Html.BeginForm("create", "movies/create"))
 {
     <div class="form-group">
@@ -26,33 +30,182 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.ReleaseDate)
-        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "datefield", type = "date" })
+
+
     </div>
 
-  /*  <div class="form-group">
-        <label for="Actors">Add Actors</label>
-        @Html.LabelFor(m => m.Actors)
-        @Html.DropDownListFor(m => m.actor, new MultiSelectList(Model.Actors, "Id", "Name"), "Select Actors", new { @class = "form-control", Multiple = "multiple" })
-    </div>*/
 
     <div class="form-group">
         @Html.LabelFor(m => m.Actors)
-        @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { id = "list1", Multiple = "multiple" })
+        @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { id = "dd", Multiple = "multiple" })
     </div>
 
-    // <button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title="Actors"><span class="multiselect-selected-text">None selected</span> <b class="caret"></b></button>
+    <script src="~/Scripts/chosen.jquery.js"></script>
+    <script type="text/javascript">
+        $('#dd').chosen();
+    </script>
 
-    /* <div class="form-control">
-     <SELECT name="Actr">
-         @foreach (Actors actor in @Model.Actors)
-                     {
-                         @Html.ListBoxFor(m => m.actor, new SelectList(Model.Actors, "Id", "Name"), "Select Actors", SelectionMode = "multiple")
 
-                         //<option value=@actor.Name>@actor.Name</option>
-                     }
-     </SELECT>
- </div>*/
-
-    <button type="submit" class="btn btn-primary">Save</button>
+    <link href="~/Content/chosen.css" rel="stylesheet" />
 }
 
+
+
+
+
+<button id="btnShowModal" type="button"
+        class="btn btn-primary">
+    Add Actor
+</button>
+
+
+
+
+
+<div class="modal fade" tabindex="-1" id="loginModal"
+     data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title">Add new Actor</h4>
+            </div>
+            <div class="modal-body">
+                <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+
+                @using (Ajax.BeginForm("AjaxMethod", "Actors",
+    new AjaxOptions
+    {
+
+        OnSuccess = "OnSuccess",
+        OnFailure = "OnFailure",
+        LoadingElementId = "progress"
+    }))
+    {
+            <div class="form-group">
+                <label>Actor Name</label>
+                @Html.TextBoxFor(m => m.AName, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Bio</label>
+                @Html.TextBoxFor(m => m.ABio, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Date Of Birth</label>
+                @Html.TextBoxFor(m => m.ADob, new { @class = "form-control", type = "date" })
+            </div>
+            <div class="form-group">
+                <label>Sex</label>
+                @Html.TextBoxFor(m => m.ASex, new { @class = "form-control" })
+            </div>
+            <button type="submit" id="btnHideModal" class="btn btn-primary button button4">Submit</button>
+
+
+            <script type="text/javascript">
+                function OnSuccess(response) {
+                    var message = "Name:" + response.AName;
+                    message += "\nBio: " + response.ABio;
+                    message += "\nSex: " + response.ASex;
+                    //   $("#dd").dataSource.add({ "Name": response.AName, "Id": response.AId });
+                    //  $("#dd").append(name:response.AName, value: response.AId);
+                    // $("#dd").val(response.AName);
+                   
+                   // $(newOption).insertBefore($("#dd option:last"));
+                    // $('#dd').empty();
+                  //  var option = "<li class=\"active-result\" data-option-array-index=\"66\" style>" + response.AName + "</li>";
+                //    $(option).insertAfter($(".chosen-results option:last"));
+              //      $('.chosen-results').insertAfter($(".chosen-results option:last"));
+                    
+          //          $("#dd").trigger("chosen:updated");
+
+                    $("#dd").append(newOption);
+                 //   $('.chosen-results').append(option);
+                    var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
+
+                    $('#dd').trigger("chosen:updated");
+                   
+                    
+
+              
+                 //   $('#dd').chosen();
+                   
+                    alert(message);
+                   
+                }
+                function OnFailure(response) {
+                    alert("Error occured.");
+                }
+            </script>
+
+}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<button type="submit" class="btn btn-primary">Save</button>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+    });
+</script>
+
+
+
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
+
+
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=datetime]').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('input[type=datetime]').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+        });
+    </script>
+}

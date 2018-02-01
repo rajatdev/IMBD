@@ -43,7 +43,24 @@ namespace IMBD.Controllers
 
         }
 
-
+        [HttpPost]
+        public JsonResult AjaxMethod(AddMovie actor)
+        {
+            using (var context = new ImdbConfiguration())
+            {
+                var act = new Actors()
+                {
+                    Name = actor.AName,
+                    Bio = actor.ABio,
+                    Dob = actor.ADob,
+                    Sex = actor.ASex,
+                };
+                context.Actors.Add(act);
+                context.SaveChanges();
+                actor.AId = act.Id;
+            }
+            return Json(actor);
+        }
 
         public ActionResult Add()
         {

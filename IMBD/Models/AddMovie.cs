@@ -19,5 +19,12 @@ namespace IMBD.Models
         public List<int> ActorIds { get; set; }
         public ICollection<Producers> Prod;
         public ICollection<Actors> Actors;
+
+
+        public int AId { get; set; }
+        public string AName { get; set; }
+        public string ASex { get; set; }
+        public DateTime ADob { get; set; }
+        public string ABio { get; set; }
     }
 }
