@@ -13,20 +13,26 @@
         <th><h1><b>Plot</b></h1></th>
         <th><h1><b>Producer</b></h1></th>
         <th><h1><b>Actors</b></h1></th>
+        <th><h1><b>Modify</b></h1></th>
+        <th><h1><b>Delete</b></h1></th>
+       
     </tr>
 
     @foreach (Movies movie in @Model)
     {
 
-        <tr>
-            <td>@Html.ActionLink(movie.Name, "view", new { id = movie.Id })</td>
-            <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
-            <td>@movie.Plot</td>
-             <td>@movie.producer.Name</td>
- 
+    <tr>
+        <td>@Html.ActionLink(movie.Name, "view", new { id = movie.Id })</td>
+        <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
+        <td>@movie.Plot</td>
+        <td>@movie.producer.Name</td>
+        <td>Under Construction</td>
+        <td>@Html.ActionLink("Modify", "Modify", new { id = movie.Id },new { onclick = "return confirm('Are you sure want you want to modify?');" })</td>
+        <td>@Html.ActionLink("Delete", "Delete", new { id = movie.Id }, new { onclick = "return confirm('Are you sure you want to delete?');" })</td>
+       
         
-            <td>tth</td>
-        </tr>
+
+    </tr>
     }
 
 </table>

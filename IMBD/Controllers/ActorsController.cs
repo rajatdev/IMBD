@@ -46,6 +46,7 @@ namespace IMBD.Controllers
         [HttpPost]
         public JsonResult AjaxMethod(AddMovie actor)
         {
+            try { 
             using (var context = new ImdbConfiguration())
             {
                 var act = new Actors()
@@ -59,6 +60,8 @@ namespace IMBD.Controllers
                 context.SaveChanges();
                 actor.AId = act.Id;
             }
+            }
+            catch (Exception e) { string s = e.HelpLink; }
             return Json(actor);
         }
 
@@ -155,7 +158,16 @@ namespace IMBD.Controllers
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+
+            using (var context = new ImdbConfiguration())
+            {
+               
+                var actor = new Actors { Id = id };
+                context.Actors.Attach(actor);
+                context.Actors.Remove(actor);
+                context.SaveChanges();
+            }
+            return RedirectToAction("List");
         }
 
         // POST: Movies/Delete/5

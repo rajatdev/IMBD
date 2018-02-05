@@ -12,6 +12,7 @@ namespace IMBD.Models
         public DateTime ReleaseDate { get; set; }
         public string Plot { get; set; }
         public int PosterId { get; set; }
+        public string PosterPath { get; set; }
        // public int ProducerId { get; set; }
      //   public ICollection<Actor_Movies> Actor_movie { get; set; }
         public int producer { get; set; }
@@ -20,7 +21,11 @@ namespace IMBD.Models
         public ICollection<Producers> Prod;
         public ICollection<Actors> Actors;
 
-
+        public HttpPostedFileBase File { get; set; }
+        public string FilePath;
+        public Movies selectedM;
+        public Producers selectedP;
+        public ICollection<Actors> selectedA;
         public int AId { get; set; }
         public string AName { get; set; }
         public string ASex { get; set; }

@@ -157,9 +157,43 @@ namespace IMBD.Controllers
         }
 
         // GET: Movies/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Modify(int id)
         {
-            return View();
+
+            ImdbConfiguration conf = new ImdbConfiguration();
+            List<Movies> movi = conf.Movies.ToList();
+            List<Actor_Movies> am = conf.Actor_Movies.ToList();
+            List<Actors> actor = conf.Actors.ToList();
+            List<Producers> produc = conf.Producers.ToList();
+
+            /*   var viewModel = new AddCustomerViewModel
+               {
+                   Act = actor
+               };*/
+            Movies selectedmovie=new Movies();
+            foreach(Movies m in movi)
+            {
+                if (m.Id == id)
+                {
+                    selectedmovie = m;
+                    break;
+                }
+            }
+            Producers selectedproducer = new Producers();
+            foreach(Producers p in produc)
+            {
+                if (p.Id == selectedmovie.ProducerId)
+                {
+                    selectedproducer = p;
+                }
+            }
+            AddMovie mov = new AddMovie();
+            mov.Actors = actor;
+            mov.Prod = produc;
+            mov.selectedM = selectedmovie;
+            mov.selectedP = selectedproducer;
+            return View(mov);
+           // return View();
         }
 
         // POST: Movies/Edit/5
@@ -181,7 +215,26 @@ namespace IMBD.Controllers
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            
+            using (var context = new ImdbConfiguration())
+            {
+                List<Actor_Movies> am = context.Actor_Movies.ToList();
+                var movie = new Movies{ Id = id };
+                context.Movies.Attach(movie);
+                context.Movies.Remove(movie);
+                context.SaveChanges();
+                foreach(Actor_Movies movies_actor in am)
+                {
+                    if (movies_actor.Id == id)
+                    {
+                        context.Actor_Movies.Attach(movies_actor);
+                        context.Actor_Movies.Remove(movies_actor);
+                        context.SaveChanges();
+                    }
+                }
+               // var movies_actor = new Actor_Movies { MovieId = id };
+            }
+            return RedirectToAction("List");
         }
 
         // POST: Movies/Delete/5

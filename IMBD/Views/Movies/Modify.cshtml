@@ -1,34 +1,30 @@
 ﻿@model IMBD.Models.AddMovie
-@using IMBD.Models
 @{
-    /**/
-
-    /**/
-
-    /**/
-
-    ViewBag.Title = "Add";
+    ViewBag.Title = "Modify";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AddMovies</h2>
+<h2>Modify</h2>
 
 
 <script src="~/Scripts/jquery-1.12.4.js"></script>
 @using (Html.BeginForm("create", "movies/create"))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.LabelFor(m => m.selectedM.Name)
+        @Html.EditorFor(m=>m.selectedM.Name, new { @value = Model.Name, @class = "form-control" })
+    @*    @Html.TextBoxFor(m => m.Name, new {@value = Model.Name, @class = "form-control" })*@
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Plot)
-        @Html.TextBoxFor(m => m.Plot, new { @class = "form-control" })
+        @Html.LabelFor(m => m.selectedM.Plot)
+        @Html.EditorFor(m => m.selectedM.Plot, new { @value = Model.Plot, @class = "form-control" })
     </div>
     <div class="form-group">
         <label for="Producers">Add Producers</label>
-      
-        @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "producerdd" })
+        @*@Html.DropDownList("producerdd", new SelectList(
+             Model.Prod,""+Model.selectedM.producer.Id,Model.selectedM.producer.Name))*@
+        @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), new { @class = "form-control", id = "producerdd" })
+        
     </div>
     <div>
         <button id="btnAddProducer" type="button"
@@ -38,17 +34,17 @@
     </div>
     <br />
     <div class="form-group">
-        @Html.LabelFor(m => m.ReleaseDate)
-        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "datefield", type = "date" })
+        @Html.LabelFor(m => m.selectedM.ReleaseDate)
+        @Html.EditorFor(m => m.selectedM.ReleaseDate, new { @class = "datefield", type = "date" })
 
 
     </div>
 
-    <br/>
+    <br />
     <div class="form-group">
         <label for="Actors">Add Actors</label>
-        <br/>
-        @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new {@class="ActorDropDown", id = "dd", Multiple = "multiple", style = "width=200" })
+        <br />
+        @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "ActorDropDown", id = "dd", Multiple = "multiple", style = "width=200" })
     </div>
 
 
@@ -59,7 +55,6 @@
         </button>
     </div>
     <br />
-
     <div class="form-group">
         <button type="submit" id="AddMovie" class="btn btn-primary">Save</button>
 
@@ -76,7 +71,7 @@
 }
 
 
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
 <div class="modal fade" tabindex="-1" id="ActorModal"
      data-keyboard="false" data-backdrop="static">
@@ -89,7 +84,7 @@
                 <h4 class="modal-title">Add new Actor</h4>
             </div>
             <div class="modal-body">
-                
+
 
 
                 @using (Ajax.BeginForm("AjaxMethod", "Actors",
@@ -137,12 +132,12 @@ LoadingElementId = "progress"
 
                             //          $("#dd").trigger("chosen:updated");
 
-                           
+
                             //   $('.chosen-results').append(option);
-                          
+
 
                             var x = document.getElementsByClassName("ActorDropDown")[0];
-                           
+
                             var option = document.createElement("option");
                             option.text = response.AName;
                             option.value = response.AId;

@@ -15,6 +15,8 @@ namespace IMBD.Models
         public int ProducerId { get; set; }
         public virtual ICollection<Actor_Movies> Actor_movie { get; set; }
         public virtual Producers producer { get; set; }
-       // public ICollection<Actors> Actors;
+        //public HttpPostedFileBase File { get; set; }
+       // public string FilePath;
+        // public ICollection<Actors> Actors;
     }
 }

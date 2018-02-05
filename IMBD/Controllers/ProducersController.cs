@@ -33,6 +33,28 @@ namespace IMBD.Controllers
         }
 
 
+        public JsonResult AddProducer(AddMovie producer)
+        {
+            try
+            {
+                using (var context1 = new ImdbConfiguration())
+                {
+                    var pro = new Producers()
+                    {
+                        Name = producer.AName,
+                        Bio = producer.ABio,
+                        Dob = producer.ADob,
+                        Sex = producer.ASex,
+                    };
+                    context1.Producers.Add(pro);
+                    context1.SaveChanges();
+                    producer.AId = pro.Id;
+                }
+            }
+            catch (Exception e) { string s=e.HelpLink; }
+            return Json(producer);
+        }
+
         public ActionResult List()
         {
 
