@@ -21,6 +21,7 @@ namespace IMBD.Models
         public ICollection<Producers> Prod;
         public ICollection<Actors> Actors;
 
+       
         public HttpPostedFileBase File { get; set; }
         public string FilePath;
         public Movies selectedM;

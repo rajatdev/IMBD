@@ -6,7 +6,8 @@ using System.Web.Mvc;
 using IMBD.Models;
 using IMBD.ViewModel;
 using IMBD.Confuguration;
-
+using System.IO;
+using System.Drawing;
 namespace IMBD.Controllers
 {
     public class MoviesController : Controller
@@ -116,11 +117,19 @@ namespace IMBD.Controllers
         public ActionResult Create(AddMovie vm)
         {
             try
-            {
+            { 
                 String s = vm.Name;
+                String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
+                //vm.File.SaveAs(path+vm.Id);
 
-              //  DBInit.Init x = new DBInit.Init();
-              //  Movies m = new Movies() { Name = vm.Name, ReleaseDate = vm.ReleaseDate, Plot = vm.Plot, ProducerId = vm.ProducerId };
+
+                Image source = Image.FromStream(vm.File.InputStream);
+                double widthRatio = ((double)100) / source.Width;
+                double heightRatio = ((double)100) / source.Height;
+
+
+                //  DBInit.Init x = new DBInit.Init();
+                //  Movies m = new Movies() { Name = vm.Name, ReleaseDate = vm.ReleaseDate, Plot = vm.Plot, ProducerId = vm.ProducerId };
                 using (var context = new ImdbConfiguration())
                 {
                     var mov = new Movies() {
@@ -130,7 +139,13 @@ namespace IMBD.Controllers
                         PosterId=123,
                         ProducerId = vm.producer };
                     context.Movies.Add(mov);
+
+                   
+
                     context.SaveChanges();
+
+                    vm.File.SaveAs(Path.Combine(@path, "" + mov.Id + ".jpg"));
+
                     foreach (int i in vm.ActorIds)
                     {
                         var actor_mov = new Actor_Movies()

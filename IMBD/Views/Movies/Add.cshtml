@@ -11,168 +11,205 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AddMovies</h2>
+<h2>Add Movies</h2>
 
 
 <script src="~/Scripts/jquery-1.12.4.js"></script>
-@using (Html.BeginForm("create", "movies/create"))
+@using (Html.BeginForm("create", "movies/create", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        <label>Name:</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", style = "width:650px;" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Plot)
+        <label>Plot:</label>
         @Html.TextBoxFor(m => m.Plot, new { @class = "form-control" })
     </div>
+
     <div class="form-group">
-        <label for="Producers">Add Producers</label>
-      
-        @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "producerdd" })
-    </div>
-    <div>
-        <button id="btnAddProducer" type="button"
-                class="btn btn-primary">
-            Add Producer
-        </button>
-    </div>
-    <br />
-    <div class="form-group">
-        @Html.LabelFor(m => m.ReleaseDate)
-        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "datefield", type = "date" })
+        <label>Release Date:</label>
+        <br />
+        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "form-control", type = "date" })
 
 
     </div>
+   
 
-    <br/>
     <div class="form-group">
-        <label for="Actors">Add Actors</label>
+        <label for="Producers">Add Producers:</label>
         <br/>
-        @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new {@class="ActorDropDown", id = "dd", Multiple = "multiple", style = "width=200" })
+        @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "producerdd" })
+        <div class="col-md-1" id="prodiv">
+            <button id="btnAddProducer" type="button"
+                    class="btn btn-primary">
+                Add Producer
+            </button>
+        </div>   
     </div>
 
 
-    <div>
-        <button id="btnAddActor" type="button"
-                class="btn btn-primary">
-            Add Actor
-        </button>
+    <div class="form-group" id="actfg">
+        <div id="ac">
+
+            <label id="acl">Add Actors:</label>
+            <br />
+
+            @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "dd", Multiple = "multiple", style = "width=200" })
+
+        </div> 
+           <div class="col-md-1" id="actdiv">
+            <button id="btnAddActor" type="button"
+                    class="btn btn-primary">
+                Add Actor
+            </button>
+        </div>
     </div>
-    <br />
 
     <div class="form-group">
-        <button type="submit" id="AddMovie" class="btn btn-primary">Save</button>
+        <label id="acl">Movie poster:</label>
 
+        @Html.TextBoxFor(m => m.File, new { @class = "form-control", type = "file" })
+    </div>
+   
+    <div class="row">
+      
+
+        
     </div>
 
-
-    <script src="~/Scripts/chosen.jquery.js"></script>
-    <script type="text/javascript">
-        $('#dd').chosen();
-    </script>
-
-
-    <link href="~/Content/chosen.css" rel="stylesheet" />
-}
-
-
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-
-<div class="modal fade" tabindex="-1" id="ActorModal"
-     data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    ×
-                </button>
-                <h4 class="modal-title">Add new Actor</h4>
+   
+    <div class="row" >
+        <div class="col-md-1"  id="am">
+            <button type="submit" id="AddMovie" class="btn btn-primary">Save</button>
             </div>
-            <div class="modal-body">
+        </div>
+
+        <style>
+            #acl{
+               margin-left:-93px; 
                 
+            }
+            #actdiv {
+                left: 280px;
+                bottom: 30px;   
+            }
+
+            #prodiv {
+                bottom:35px;
+                left:280px;
+            }
+            #am{
+                left:70px;
+            }
+        </style>
+
+        <script src="~/Scripts/chosen.jquery.js"></script>
+        <script type="text/javascript">
+            $('#dd').chosen();
+        </script>
 
 
-                @using (Ajax.BeginForm("AjaxMethod", "Actors",
+        <link href="~/Content/chosen.css" rel="stylesheet" />
+        }
+
+
+        <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+        <div class="modal fade" tabindex="-1" id="ActorModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                        <h4 class="modal-title">Add new Actor</h4>
+                    </div>
+                    <div class="modal-body">
+
+
+
+                        @using (Ajax.BeginForm("AjaxMethod", "Actors",
 new AjaxOptions
 {
 
-OnSuccess = "OnSuccess",
-OnFailure = "OnFailure",
-LoadingElementId = "progress"
+        OnSuccess = "OnSuccess",
+        OnFailure = "OnFailure",
+        LoadingElementId = "progress"
 }))
-                {
-                    <div class="form-group">
-                        <label>Actor Name</label>
-                        @Html.TextBoxFor(m => m.AName, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label>Bio</label>
-                        @Html.TextBoxFor(m => m.ABio, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label>Date Of Birth</label>
-                        @Html.TextBoxFor(m => m.ADob, new { @class = "form-control", type = "date" })
-                    </div>
-                    <div class="form-group">
-                        <label>Sex</label>
-                        @Html.TextBoxFor(m => m.ASex, new { @class = "form-control" })
-                    </div>
-                    <button type="submit" id="ActorHideModal" class="btn btn-primary button button4">Submit</button>
+                    {
+                        <div class="form-group">
+                            <label>Actor Name</label>
+                            @Html.TextBoxFor(m => m.AName, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Bio</label>
+                            @Html.TextBoxFor(m => m.ABio, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Date Of Birth</label>
+                            @Html.TextBoxFor(m => m.ADob, new { @class = "form-control", type = "date" })
+                        </div>
+                        <div class="form-group">
+                            <label>Sex</label>
+                            @Html.TextBoxFor(m => m.ASex, new { @class = "form-control" })
+                        </div>
+                        <button type="submit" id="ActorHideModal" class="btn btn-primary button button4">Submit</button>
 
 
-                    <script type="text/javascript">
-                        function OnSuccess(response) {
-                            var message = "Name:" + response.AName;
-                            message += "\nBio: " + response.ABio;
-                            message += "\nSex: " + response.ASex;
-                            //   $("#dd").dataSource.add({ "Name": response.AName, "Id": response.AId });
-                            //  $("#dd").append(name:response.AName, value: response.AId);
-                            // $("#dd").val(response.AName);
+                        <script type="text/javascript">
+                            function OnSuccess(response) {
+                                var message = "Name:" + response.AName;
+                                message += "\nBio: " + response.ABio;
+                                message += "\nSex: " + response.ASex;
+                                //   $("#dd").dataSource.add({ "Name": response.AName, "Id": response.AId });
+                                //  $("#dd").append(name:response.AName, value: response.AId);
+                                // $("#dd").val(response.AName);
 
-                            // $(newOption).insertBefore($("#dd option:last"));
-                            // $('#dd').empty();
-                            //  var option = "<li class=\"active-result\" data-option-array-index=\"66\" style>" + response.AName + "</li>";
-                            //    $(option).insertAfter($(".chosen-results option:last"));
-                            //      $('.chosen-results').insertAfter($(".chosen-results option:last"));
+                                // $(newOption).insertBefore($("#dd option:last"));
+                                // $('#dd').empty();
+                                //  var option = "<li class=\"active-result\" data-option-array-index=\"66\" style>" + response.AName + "</li>";
+                                //    $(option).insertAfter($(".chosen-results option:last"));
+                                //      $('.chosen-results').insertAfter($(".chosen-results option:last"));
 
-                            //          $("#dd").trigger("chosen:updated");
-
-                           
-                            //   $('.chosen-results').append(option);
-                          
-
-                            var x = document.getElementsByClassName("ActorDropDown")[0];
-                           
-                            var option = document.createElement("option");
-                            option.text = response.AName;
-                            option.value = response.AId;
-                            x.append(option);
-
-                            $("#dd").trigger("chosen:updated");
-
-                            var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
-                            $("#dd").append(newOption);
-                            $("#dd").trigger("chosen:updated");
-                            $("#ActorModal").modal('hide');
+                                //          $("#dd").trigger("chosen:updated");
 
 
+                                //   $('.chosen-results').append(option);
 
-                            //   $('#dd').chosen();
 
-                            alert(message);
+                                var x = document.getElementsByClassName("ActorDropDown")[0];
 
-                        }
-                        function OnFailure(response) {
-                            alert("Error occured.");
-                        }
-                    </script>
+                                var option = document.createElement("option");
+                                option.text = response.AName;
+                                option.value = response.AId;
+                                x.append(option);
+
+                                $("#dd").trigger("chosen:updated");
+
+                                var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
+                                $("#dd").append(newOption);
+                                $("#dd").trigger("chosen:updated");
+                                $("#ActorModal").modal('hide');
+
+
+
+                                //   $('#dd').chosen();
+
+                                alert(message);
+
+                            }
+                            function OnFailure(response) {
+                                alert("Error occured.");
+                            }
+                        </script>
 
                 }
-            </div>
+                    </div>
 
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
 
 
@@ -181,77 +218,77 @@ LoadingElementId = "progress"
 
 
 
-@*This is the pop up for Producers*@
+        @*This is the pop up for Producers*@
 
 
 
 
-<div class="modal fade" tabindex="-2" id="ProducerModal"
-     data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    ×
-                </button>
-                <h4 class="modal-title">Add new Producer</h4>
-            </div>
-            <div class="modal-body">
-                @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+        <div class="modal fade" tabindex="-2" id="ProducerModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                        <h4 class="modal-title">Add new Producer</h4>
+                    </div>
+                    <div class="modal-body">
+                        @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
 
 
-                @using (Ajax.BeginForm("AddProducer", "Producers",
+                        @using (Ajax.BeginForm("AddProducer", "Producers",
 new AjaxOptions
 {
 
-OnSuccess = "OnSuccess",
-OnFailure = "OnFailure",
-LoadingElementId = "progress"
+        OnSuccess = "OnSuccess",
+        OnFailure = "OnFailure",
+        LoadingElementId = "progress"
 }))
-                {
-                    <div class="form-group">
-                        <label>Producer Name</label>
-                        @Html.TextBoxFor(m => m.AName, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label>Bio</label>
-                        @Html.TextBoxFor(m => m.ABio, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label>Date Of Birth</label>
-                        @Html.TextBoxFor(m => m.ADob, new { @class = "form-control", type = "date" })
-                    </div>
-                    <div class="form-group">
-                        <label>Sex</label>
-                        @Html.TextBoxFor(m => m.ASex, new { @class = "form-control" })
-                    </div>
-                    <button type="submit" id="ProducerHideModal" class="btn btn-primary button button4">Submit</button>
+                    {
+                        <div class="form-group">
+                            <label>Producer Name</label>
+                            @Html.TextBoxFor(m => m.AName, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Bio</label>
+                            @Html.TextBoxFor(m => m.ABio, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Date Of Birth</label>
+                            @Html.TextBoxFor(m => m.ADob, new { @class = "form-control", type = "date" })
+                        </div>
+                        <div class="form-group">
+                            <label>Sex</label>
+                            @Html.TextBoxFor(m => m.ASex, new { @class = "form-control" })
+                        </div>
+                        <button type="submit" id="ProducerHideModal" class="btn btn-primary button button4">Submit</button>
 
 
-                    <script type="text/javascript">
-                        function OnSuccess(response) {
-                            var message = "Name:" + response.AName;
-                            message += "\nBio: " + response.ABio;
-                            message += "\nSex: " + response.ASex;
+                        <script type="text/javascript">
+                            function OnSuccess(response) {
+                                var message = "Name:" + response.AName;
+                                message += "\nBio: " + response.ABio;
+                                message += "\nSex: " + response.ASex;
 
-                            var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
-                            $("#producerdd").append(newOption);
+                                var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
+                                $("#producerdd").append(newOption);
 
-                            $("#ProducerModal").modal('hide');
-                            alert(message);
+                                $("#ProducerModal").modal('hide');
+                                alert(message);
 
-                        }
-                        function OnFailure(response) {
-                            alert("Error occured.");
-                        }
-                    </script>
+                            }
+                            function OnFailure(response) {
+                                alert("Error occured.");
+                            }
+                        </script>
 
                 }
+                    </div>
+
+                </div>
             </div>
-
         </div>
-    </div>
-</div>
 
 
 
@@ -260,58 +297,58 @@ LoadingElementId = "progress"
 
 
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#btnAddActor").click(function () {
-            $("#ActorModal").modal('show');
-        });
+            $(document).ready(function () {
+                $("#btnAddActor").click(function () {
+                    $("#ActorModal").modal('show');
+                });
 
-        $("#ActorHideModal").click(function () {
-            $("#ActorModal").modal('hide');
-        });
+                $("#ActorHideModal").click(function () {
+                    $("#ActorModal").modal('hide');
+                });
 
-        $("#btnAddProducer").click(function () {
-            $("#ProducerModal").modal('show');
-        });
+                $("#btnAddProducer").click(function () {
+                    $("#ProducerModal").modal('show');
+                });
 
-        //$("#ProducerHideModal").click(function () {
-        //    $("#ProducerModal").modal('hide');
-        //});
+                //$("#ProducerHideModal").click(function () {
+                //    $("#ProducerModal").modal('hide');
+                //});
 
-        $("#AddMovie").click(function () {
-            alert("New Movie Added");
-        });
-    });
-</script>
-
-
-
-@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
-
-
-
-
-@section Scripts {
-
-    @Scripts.Render("~/bundles/jqueryui")
-    @Styles.Render("~/Content/cssjqryUi")
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('input[type=datetime]').datepicker({
-                dateFormat: "dd/M/yy",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-60:+0"
+                $("#AddMovie").click(function () {
+                    alert("New Movie Added");
+                });
             });
-            $('input[type=datetime]').datepicker({
-                dateFormat: "dd/M/yy",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-60:+0"
-            });
+        </script>
 
-        });
-    </script>
-}
+
+
+        @*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
+
+
+
+
+        @section Scripts {
+
+            @Scripts.Render("~/bundles/jqueryui")
+            @Styles.Render("~/Content/cssjqryUi")
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('input[type=datetime]').datepicker({
+                        dateFormat: "dd/M/yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-60:+0"
+                    });
+                    $('input[type=datetime]').datepicker({
+                        dateFormat: "dd/M/yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-60:+0"
+                    });
+
+                });
+            </script>
+        }

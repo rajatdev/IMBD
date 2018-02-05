@@ -8,6 +8,7 @@
 <h2>Movies List</h2>
 <table border="1">
     <tr>
+        <th><h1><b>Poster Image</b></h1></th>
         <th><h1><b>Movie name</b></h1></th>
         <th><h1><b>Year Of Release</b></h1></th>
         <th><h1><b>Plot</b></h1></th>
@@ -22,6 +23,10 @@
     {
 
     <tr>
+        @{ 
+            string image = "~/Content/Posters/" + movie.Id + ".jpg";
+        }
+        <td><img src="@Url.Content(image)"/></td>
         <td>@Html.ActionLink(movie.Name, "view", new { id = movie.Id })</td>
         <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
         <td>@movie.Plot</td>
