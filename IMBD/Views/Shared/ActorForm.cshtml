@@ -1,0 +1,33 @@
+﻿@model IMBD.ViewModel.AddMovieViewModel
+@{
+    ViewBag.Title = "Add";
+    Layout = null;
+}
+
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<form id="ActorForm">
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label>Actor Name</label>
+            @Html.TextBoxFor(m => m.AName, new { @class = "form-control", oninput = "setCustomValidity('')", name = "Actor Name", required = "true", oninvalid = "this.setCustomValidity('Please Enter a name for the Actor')" })
+        </div>
+        <div class="form-group">
+            <label>Bio</label>
+            @Html.TextBoxFor(m => m.ABio, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Date Of Birth</label>
+            @Html.TextBoxFor(m => m.ADob, new { @class = "form-control", type = "date" })
+        </div>
+        <div class="form-group">
+            <div>
+                <label>Sex:</label>
+            </div>
+            <input type="radio" name="ASex" value="M" checked> Male<br>
+            <input type="radio" name="ASex" value="F"> Female<br>
+        </div>
+        <button type="button" id="ActorHideModal" class="btn btn-primary button button4" onclick="AddingActor()">Submit</button>
+
+    </div>
+</form>

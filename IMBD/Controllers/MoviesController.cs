@@ -74,14 +74,17 @@ namespace IMBD.Controllers
             List<Actors> actor = conf.Actors.ToList();
             List<Producers> produc = conf.Producers.ToList();
 
-         /*   var viewModel = new AddCustomerViewModel
+            /*   var viewModel = new AddCustomerViewModel
+               {
+                   Act = actor
+               };*/
+            var viewModel = new AddMovieViewModel
             {
-                Act = actor
-            };*/
-            AddMovie mov = new AddMovie();
-            mov.Actors = actor;
-            mov.Prod = produc;
-            return View(mov);
+                Actors = actor,
+                Prod=produc
+            };
+            
+            return View(viewModel);
         }
 
 
@@ -114,7 +117,7 @@ namespace IMBD.Controllers
 
         // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(AddMovie vm)
+        public ActionResult Create(AddMovieViewModel vm)
         {
             try
             { 
@@ -202,7 +205,24 @@ namespace IMBD.Controllers
                     selectedproducer = p;
                 }
             }
-            AddMovie mov = new AddMovie();
+            //  int i = 0;
+            AddMovieViewModel mov = new AddMovieViewModel();
+            foreach (Actor_Movies amov in am)
+            {
+                if(selectedmovie.Id== amov.MovieId)
+                {
+                  //  Actors ac = new Actors { Id = amov.ActorId };
+                  foreach(Actors ac in actor)
+                    {
+                        if (ac.Id == amov.ActorId)
+                        {
+                         //   mov.selectedA.Add(ac);
+                        }
+                    }
+                   
+                }
+            }
+           
             mov.Actors = actor;
             mov.Prod = produc;
             mov.selectedM = selectedmovie;

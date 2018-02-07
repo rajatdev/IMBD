@@ -32,8 +32,8 @@ namespace IMBD.Controllers
 
         }
 
-
-        public JsonResult AddProducer(AddMovie producer)
+        [HttpPost]
+        public JsonResult AddProducer(AddMovieViewModel producer)
         {
             try
             {

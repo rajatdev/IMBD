@@ -44,7 +44,7 @@ namespace IMBD.Controllers
         }
 
         [HttpPost]
-        public JsonResult AjaxMethod(AddMovie actor)
+        public JsonResult AddActor(AddMovieViewModel actor)
         {
             try { 
             using (var context = new ImdbConfiguration())

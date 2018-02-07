@@ -173,11 +173,11 @@
     </Compile>
     <Compile Include="Models\Actors.cs" />
     <Compile Include="Models\Actor_Movies.cs" />
-    <Compile Include="Models\AddMovie.cs" />
     <Compile Include="Models\Movies.cs" />
     <Compile Include="Models\Producers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AddCustomerViewModel.cs" />
+    <Compile Include="ViewModel\AddMovieViewModel.cs" />
     <Compile Include="ViewModel\ListMovieViewModel.cs" />
     <Compile Include="ViewModel\ViewMovieViewModel.cs" />
   </ItemGroup>
@@ -348,6 +348,8 @@
     <Content Include="Views\Producers\View.cshtml" />
     <Content Include="Views\Movies\PopUp.cshtml" />
     <Content Include="Views\Movies\Modify.cshtml" />
+    <Content Include="Views\Shared\ActorForm.cshtml" />
+    <Content Include="Views\Shared\ProducerForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
