@@ -183,6 +183,7 @@ namespace IMBD.Controllers
             List<Actor_Movies> am = conf.Actor_Movies.ToList();
             List<Actors> actor = conf.Actors.ToList();
             List<Producers> produc = conf.Producers.ToList();
+            List<Actors> selectedActors= new List<Actors>();
 
             /*   var viewModel = new AddCustomerViewModel
                {
@@ -222,11 +223,29 @@ namespace IMBD.Controllers
                    
                 }
             }
-           
+
+            foreach(Actor_Movies amov in selectedmovie.Actor_movie)
+            {
+                if (amov.MovieId == selectedmovie.Id)
+                {
+                    Actors act = (from s in actor
+                              where s.Id == amov.ActorId select s).Single();
+                                         
+
+                    // var act = new Actors { Id = id };
+                    // conf.Actors.Attach(act);
+                    selectedActors.Add(act);
+                }
+            }
+
+            
+
+
             mov.Actors = actor;
             mov.Prod = produc;
             mov.selectedM = selectedmovie;
             mov.selectedP = selectedproducer;
+            mov.selectedA = selectedActors;
             return View(mov);
            // return View();
         }

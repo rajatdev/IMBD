@@ -289,6 +289,22 @@
             $('#Producerdd').val(@Model.selectedP.Id);
             $('#Producerdd').trigger('change');
             $('#select2-Producerdd-container').text('@Model.selectedP.Name');
+             @{
+                 int i = 0;
+                 string[] actorName = new string[100];
+            }
+
+         //   $('#Actordd').val(@Model.selectedA.SelectMany(m => m.Name).ToArray());
+            for (i = 0; i <@Model.selectedA.Count;i++) {
+              @*  // $('#Actordd').val(@Model.selectedA.ElementAt(i++).Id);*@
+                @{actorName[i] = ""+Model.selectedA.ElementAt(i++).Id;
+                }
+
+            }
+          //  var array[] =@actorName;
+        //    $('#Actordd').val(array);
+       //      $('#Actordd').trigger('refresh');
+              @*  // $('#select2-Actordd-container').text('@Model.selectedA.ElementAt(i++).Name');
            @* //var actors =@Model.selectedA.ToArray();
             @{
                 int i = 0;
@@ -302,7 +318,7 @@
                 }
 
                     }
-              
+
                 }
             @*$('#Actordd').val(@Model.selectedA)
             $('#Actordd').trigger('change');
