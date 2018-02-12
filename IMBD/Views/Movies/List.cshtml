@@ -31,7 +31,14 @@
         <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
         <td>@movie.Plot</td>
         <td>@movie.producer.Name</td>
-        <td>Under Construction</td>
+        <td>
+            //@*  @foreach (var actor in movie.Actor_movie)
+        {
+        //   @actor.Id*@
+            }
+
+
+        </td>
         <td>@Html.ActionLink("Modify", "Modify", new { id = movie.Id },new { onclick = "return confirm('Are you sure want you want to modify?');" })</td>
         <td>@Html.ActionLink("Delete", "Delete", new { id = movie.Id }, new { onclick = "return confirm('Are you sure you want to delete?');" })</td>
        

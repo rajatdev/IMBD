@@ -8,58 +8,53 @@ using IMBD.ViewModel;
 using IMBD.Confuguration;
 using System.IO;
 using System.Drawing;
+using IMBD.Repository;
+using System.Configuration;
+
 namespace IMBD.Controllers
 {
     public class MoviesController : Controller
     {
+
+        MoviesRepository moviesRepository;
+        ProducersRepository producersRepository;
+        ActorsRepository actorsRepository;
+        Actor_MoviesRepository actor_MoviesRepository;
+
+        public MoviesController()
+        {
+            moviesRepository = new MoviesRepository();
+
+            producersRepository = new ProducersRepository();
+
+            actorsRepository = new ActorsRepository();
+
+            actor_MoviesRepository = new Actor_MoviesRepository();
+
+
+        }
         public ActionResult View(int id)
         {
-            /*  var movie = new Movies() { Id = 12, Name = "Movies Name" };
-              var producer = new Producers() { Name = "Producers Name" };
 
-              var actor = new List<Actors>
-              {
-                  new Actors { Name="Actor 1"},
-                  new Actors { Name="Actor 2" }
-              };*/
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Movies> movies = conf.Movies.ToList();
+            List<Movies> movies = moviesRepository.ListMovie();
 
-            Movies mv = new Movies();
-            
-            foreach(Movies m in movies)
-            {
-                if (id == m.Id)
-                {
-                    mv = m;
-                    break;
-                }
-            }
+            Movies movie = movies.Where(s => s.Id == id).Single();
 
-         /*   var viewModel = new ViewMovieViewModel
-            {
-                Vmmovie = movie,
-                Vmactors = actor,
-                Vmproducer=producer
-            };*/
 
-            //  ViewData["Movie"] = movie;
-            //   ViewBag.Movie = movie;
-            return View(mv);
-            //  return View();
 
-           // return View();
+            return View(movie);
+
         }
 
 
         public ActionResult List()
         {
 
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Movies> movies = conf.Movies.ToList();
+
+            List<Movies> movies = moviesRepository.ListMovie();
 
             return View(movies);
-           
+
         }
 
         public ActionResult PopUp()
@@ -69,21 +64,16 @@ namespace IMBD.Controllers
 
         public ActionResult Add()
         {
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Actor_Movies> dsf = conf.Actor_Movies.ToList();
-            List<Actors> actor = conf.Actors.ToList();
-            List<Producers> produc = conf.Producers.ToList();
+            List<Actors> actor = actorsRepository.ListActors();
+            List<Producers> producers = producersRepository.ListProducers();
 
-            /*   var viewModel = new AddCustomerViewModel
-               {
-                   Act = actor
-               };*/
+
             var viewModel = new AddMovieViewModel
             {
                 Actors = actor,
-                Prod=produc
+                Prod = producers
             };
-            
+
             return View(viewModel);
         }
 
@@ -99,7 +89,7 @@ namespace IMBD.Controllers
         [HttpPost]
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -117,55 +107,42 @@ namespace IMBD.Controllers
 
         // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(AddMovieViewModel vm)
+        public ActionResult Create(AddMovieViewModel viewmodel)
         {
             try
-            { 
-                String s = vm.Name;
+            {
+                String s = viewmodel.Name;
                 String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
-                //vm.File.SaveAs(path+vm.Id);
+                //String path = ConfigurationManager.AppSettings["Path"];
+                //   viewmodel.File.SaveAs(path+viewmodel.Id);
 
 
-                Image source = Image.FromStream(vm.File.InputStream);
-                double widthRatio = ((double)100) / source.Width;
-                double heightRatio = ((double)100) / source.Height;
+                Image source = Image.FromStream(viewmodel.File.InputStream);
 
-
-                //  DBInit.Init x = new DBInit.Init();
-                //  Movies m = new Movies() { Name = vm.Name, ReleaseDate = vm.ReleaseDate, Plot = vm.Plot, ProducerId = vm.ProducerId };
-                using (var context = new ImdbConfiguration())
+                var NewMovie = new Movies()
                 {
-                    var mov = new Movies() {
-                        Name = vm.Name,
-                        ReleaseDate = vm.ReleaseDate,
-                        Plot = vm.Plot,
-                        PosterId=123,
-                        ProducerId = vm.producer };
-                    context.Movies.Add(mov);
+                    Name = viewmodel.Name,
+                    ReleaseDate = viewmodel.ReleaseDate,
+                    Plot = viewmodel.Plot,
+                    PosterId = 123,
+                    ProducerId = viewmodel.producer
+                };
+                moviesRepository.AddMovie(NewMovie);
 
-                   
 
-                    context.SaveChanges();
+                viewmodel.File.SaveAs(Path.Combine(@path, "" + NewMovie.Id + ".jpg"));
 
-                    vm.File.SaveAs(Path.Combine(@path, "" + mov.Id + ".jpg"));
-
-                    foreach (int i in vm.ActorIds)
+                foreach (int i in viewmodel.ActorIds)
+                {
+                    var actor_mov = new Actor_Movies()
                     {
-                        var actor_mov = new Actor_Movies()
-                        {
-                            MovieId = mov.Id,
-                            ActorId = i
-                        };
-                        context.Actor_Movies.Add(actor_mov);
-                    }
-                    context.SaveChanges();
-                   
-                   
+                        MovieId = NewMovie.Id,
+                        ActorId = i
+                    };
+                    actor_MoviesRepository.Add(actor_mov);
+
                 }
 
-                //cont.Movies.Add(std);
-                // TODO: Add insert logic here
-               
                 return RedirectToAction("Add");
             }
             catch
@@ -178,116 +155,91 @@ namespace IMBD.Controllers
         public ActionResult Modify(int id)
         {
 
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Movies> movi = conf.Movies.ToList();
-            List<Actor_Movies> am = conf.Actor_Movies.ToList();
-            List<Actors> actor = conf.Actors.ToList();
-            List<Producers> produc = conf.Producers.ToList();
-            List<Actors> selectedActors= new List<Actors>();
+            List<Movies> movies = moviesRepository.ListMovie();
+            Movies selectedmovie = (from m in movies
+                                    where m.Id == id
+                                    select m).Single();
+            List<Producers> producers = producersRepository.ListProducers();
+            Producers selectedproducer = (from p in producers
+                                          where p.Id == selectedmovie.ProducerId
+                                          select p).Single();
 
-            /*   var viewModel = new AddCustomerViewModel
-               {
-                   Act = actor
-               };*/
-            Movies selectedmovie=new Movies();
-            foreach(Movies m in movi)
-            {
-                if (m.Id == id)
-                {
-                    selectedmovie = m;
-                    break;
-                }
-            }
-            Producers selectedproducer = new Producers();
-            foreach(Producers p in produc)
-            {
-                if (p.Id == selectedmovie.ProducerId)
-                {
-                    selectedproducer = p;
-                }
-            }
-            //  int i = 0;
-            AddMovieViewModel mov = new AddMovieViewModel();
-            foreach (Actor_Movies amov in am)
-            {
-                if(selectedmovie.Id== amov.MovieId)
-                {
-                  //  Actors ac = new Actors { Id = amov.ActorId };
-                  foreach(Actors ac in actor)
-                    {
-                        if (ac.Id == amov.ActorId)
-                        {
-                         //   mov.selectedA.Add(ac);
-                        }
-                    }
-                   
-                }
-            }
+            List<Actors> actors = actorsRepository.ListActors();
+            List<Actor_Movies> actor_movies = actor_MoviesRepository.ListActor_Movies();
 
-            foreach(Actor_Movies amov in selectedmovie.Actor_movie)
-            {
-                if (amov.MovieId == selectedmovie.Id)
-                {
-                    Actors act = (from s in actor
-                              where s.Id == amov.ActorId select s).Single();
-                                         
+            List<Actors> selectedActors = new List<Actors>();
 
-                    // var act = new Actors { Id = id };
-                    // conf.Actors.Attach(act);
+
+            AddMovieViewModel viewmodel = new AddMovieViewModel();
+
+
+            foreach (Actor_Movies actor_movie in selectedmovie.Actor_movie)
+            {
+                if (actor_movie.MovieId == selectedmovie.Id)
+                {
+                    Actors act = (from s in actors
+                                  where s.Id == actor_movie.ActorId
+                                  select s).Single();
                     selectedActors.Add(act);
                 }
             }
 
-            
 
+            string temp = selectedmovie.ReleaseDate.ToString("yyyy-MM-dd");
+            viewmodel.ReleaseDate = Convert.ToDateTime(temp);
+            viewmodel.Actors = actors;
+            viewmodel.Prod = producers;
+            viewmodel.Plot = selectedmovie.Plot;
+            viewmodel.selectedM = selectedmovie;
+            viewmodel.selectedP = selectedproducer;
+            viewmodel.selectedA = selectedActors;
+            return View(viewmodel);
 
-            mov.Actors = actor;
-            mov.Prod = produc;
-            mov.selectedM = selectedmovie;
-            mov.selectedP = selectedproducer;
-            mov.selectedA = selectedActors;
-            return View(mov);
-           // return View();
         }
 
         // POST: Movies/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(AddMovieViewModel viewmodel)
         {
             try
             {
-                // TODO: Add update logic here
+                String s = viewmodel.Name;
 
-                return RedirectToAction("Index");
+
+                var movie = new Movies()
+                {
+                    Name = viewmodel.Name,
+                    ReleaseDate = viewmodel.ReleaseDate,
+                    Plot = viewmodel.Plot,
+                    PosterId = 123,
+                    ProducerId = viewmodel.producer
+                };
+                moviesRepository.ModifyMovie(movie, viewmodel.ActorIds, viewmodel.File);
+
+
+
+
+                return RedirectToAction("List");
+
             }
             catch
             {
-                return View();
+                return RedirectToAction("List");
             }
         }
 
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
-            
-            using (var context = new ImdbConfiguration())
-            {
-                List<Actor_Movies> am = context.Actor_Movies.ToList();
-                var movie = new Movies{ Id = id };
-                context.Movies.Attach(movie);
-                context.Movies.Remove(movie);
-                context.SaveChanges();
-                foreach(Actor_Movies movies_actor in am)
-                {
-                    if (movies_actor.Id == id)
-                    {
-                        context.Actor_Movies.Attach(movies_actor);
-                        context.Actor_Movies.Remove(movies_actor);
-                        context.SaveChanges();
-                    }
-                }
-               // var movies_actor = new Actor_Movies { MovieId = id };
-            }
+            List<Movies> movies = moviesRepository.ListMovie();
+
+            Movies movie = (from m in movies
+                            where m.Id == id
+                            select m).Single();
+
+
+            moviesRepository.DeleteMovie(movie);
+
             return RedirectToAction("List");
         }
 

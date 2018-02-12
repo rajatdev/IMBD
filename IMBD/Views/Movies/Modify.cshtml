@@ -10,8 +10,8 @@
 
 
 <script src="~/Scripts/jquery-1.12.4.js"></script>
-@*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
-
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
 <script type="text/javascript">
     function AddingProducer() {
         $.ajax({
@@ -80,11 +80,11 @@
 
 
 
-@using (Html.BeginForm("create", "movies", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "movies", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
 {
     <div class="form-group">
         <label>Name:</label>
-        @Html.TextBoxFor(m => m.selectedM.Name, new
+        @Html.TextBoxFor(m => m.Name, new
         {
             @class = "form-control",
             oninput = "setCustomValidity('')",
@@ -97,13 +97,13 @@
     </div>
     <div class="form-group">
         <label>Plot:</label>
-        @Html.TextAreaFor(m => m.selectedM.Plot, new
+        @Html.TextAreaFor(m => m.Plot, new
         {
             @class = "form-control",
             required = "required",
             oninput = "setCustomValidity('')",
             oninvalid = "this.setCustomValidity('Please Enter a Plot for the movie')",
-            Value = Model.selectedM.Name
+            Value = Model.Plot
         })
     </div>
 
@@ -111,13 +111,12 @@
         <label>Release Date:</label>
         <br />
 
-        @Html.TextBoxFor(m => m.selectedM.ReleaseDate, new
-        {
-            @class = "form-control",
-            id="Rd",
-            type = "date",
-            Value = Model.selectedM.ReleaseDate
-        })
+        @Html.TextBoxFor(m => m.ReleaseDate, new
+   {
+       @class = "form-control",
+       id="Rd",
+       type = "date",
+   })
 
 
     </div>
@@ -146,9 +145,28 @@
             <label id="acl">Add Actors:</label>
             <br />
 
-            @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })
+         @*   @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })*@
+            <select class="actor_dropdown" id="Actordd" multiple="multiple" name="ActorIds">
 
-        </div>
+                @{
+        foreach (var actor in Model.Actors)
+        {
+
+
+
+            if (Model != null && Model.selectedA.Contains(actor))
+            {
+                <option value=@actor.Id selected>@actor.Name</option>
+
+}
+else
+{
+            <option value=@actor.Id>@actor.Name</option>
+}
+}
+                }
+            </select>
+</div>
         <div class="col-md-1" id="actdiv">
             <button id="btnAddActor" type="button"
                     class="btn btn-primary" data-target="#ActorModal" data-toggle="modal">
@@ -279,24 +297,26 @@
 
 <script type="text/javascript">
         $(document).ready(function () {
-            @*$('input[type=datetime]').datepicker(('setDate', @Model.ReleaseDate),{
-                dateFormat: "dd/M/yy",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-60:+0"
-            });*@
-           // $("#Producerdd").select2('data', { id: @Model.selectedP.Id, text: @Model.selectedP.Name });
+          
+            var year = @Model.selectedM.ReleaseDate.Year;
+            var month = @Model.selectedM.ReleaseDate.Month;
+            var day = @Model.selectedM.ReleaseDate.Day;
+
+            var setDate = new Date(day + "-" + month + "-" + year ); 
+       
+          //  $('#Rd').datepicker('setDate', @Model.selectedM.ReleaseDate);
+       
             $('#Producerdd').val(@Model.selectedP.Id);
             $('#Producerdd').trigger('change');
             $('#select2-Producerdd-container').text('@Model.selectedP.Name');
-             @{
+            @*     @{
                  int i = 0;
                  string[] actorName = new string[100];
             }
 
          //   $('#Actordd').val(@Model.selectedA.SelectMany(m => m.Name).ToArray());
             for (i = 0; i <@Model.selectedA.Count;i++) {
-              @*  // $('#Actordd').val(@Model.selectedA.ElementAt(i++).Id);*@
+              @*  // $('#Actordd').val(@Model.selectedA.ElementAt(i++).Id);
                 @{actorName[i] = ""+Model.selectedA.ElementAt(i++).Id;
                 }
 

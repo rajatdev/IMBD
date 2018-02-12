@@ -171,11 +171,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IActors.cs" />
+    <Compile Include="Interfaces\IActor_Movies.cs" />
+    <Compile Include="Interfaces\IMovies.cs" />
+    <Compile Include="Interfaces\IProducers.cs" />
     <Compile Include="Models\Actors.cs" />
     <Compile Include="Models\Actor_Movies.cs" />
     <Compile Include="Models\Movies.cs" />
     <Compile Include="Models\Producers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ActorsRepository.cs" />
+    <Compile Include="Repository\Actor_MoviesRepository.cs" />
+    <Compile Include="Repository\MoviesRepository.cs" />
+    <Compile Include="Repository\ProducersRepository.cs" />
     <Compile Include="ViewModel\AddCustomerViewModel.cs" />
     <Compile Include="ViewModel\AddMovieViewModel.cs" />
     <Compile Include="ViewModel\ListMovieViewModel.cs" />

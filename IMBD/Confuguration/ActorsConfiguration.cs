@@ -14,6 +14,7 @@ namespace IMBD.Confuguration
         {
             this.ToTable("Actors");
             this.HasKey<int>(s => s.Id);
+            this.Property(p => p.Id).HasColumnName("Id");
             this.Property(p => p.Name).HasColumnName("Name");
             this.Property(p => p.Sex).HasColumnName("Sex");
             this.Property(p => p.Dob).HasColumnName("Dob");
