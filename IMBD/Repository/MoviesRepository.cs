@@ -41,8 +41,8 @@ namespace IMBD.Repository
             modify.ReleaseDate = movie.ReleaseDate;
             modify.ProducerId = movie.ProducerId;
             _context.SaveChanges();
-
-            File.SaveAs(Path.Combine(@path, "" + modify.Id + ".jpg"));
+            if(File!=null)
+                File.SaveAs(Path.Combine(@path, "" + modify.Id + ".jpg"));
             bool present = false;
 
             List<int> existingIds= new List<int>();
@@ -97,13 +97,18 @@ namespace IMBD.Repository
             _context.SaveChanges();
             actorMovies = actorMovies.Where(e=> e.MovieId == movie.Id).ToList();
             //actormovies=(from am in actormovies where am.MovieId == movie.Id select am).ToList();
-            foreach (Actor_Movies movie_actor in actorMovies)
-            {              
+            try
+            {
+                foreach (Actor_Movies movie_actor in actorMovies)
+                {
                     _context.Actor_Movies.Attach(movie_actor);
                     _context.Actor_Movies.Remove(movie_actor);
-                    _context.SaveChanges();
-        
+
+
+                }
+                _context.SaveChanges();
             }
+            catch (Exception e) { var x=e.HelpLink; }
         }
     }
 }

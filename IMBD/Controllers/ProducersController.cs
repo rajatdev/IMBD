@@ -5,29 +5,36 @@ using System.Web;
 using System.Web.Mvc;
 using IMBD.Models;
 using IMBD.ViewModel;
+using IMBD.Repository;
 using IMBD.Confuguration;
 
 namespace IMBD.Controllers
 {
     public class ProducersController : Controller
     {
+
+       
+        ProducersRepository producersRepository;
+       
+
+        public ProducersController()
+        {
+          
+
+            producersRepository = new ProducersRepository();
+
+
+        }
         public ActionResult View(int id)
         {
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Producers> Producers = conf.Producers.ToList();
+            
+            List<Producers> Producers = producersRepository.ListProducers();
 
-            Producers pr = new Producers();
+            Producers producer = Producers.Where(p => p.Id == id).Single();
 
-            foreach (Producers pro in Producers)
-            {
-                if (id == pro.Id)
-                {
-                    pr = pro;
-                    break;
-                }
-            }
+            
 
-            return View(pr);
+            return View(producer);
 
 
         }
@@ -37,19 +44,17 @@ namespace IMBD.Controllers
         {
             try
             {
-                using (var context1 = new ImdbConfiguration())
-                {
-                    var pro = new Producers()
+                
+                    var newProducer = new Producers()
                     {
                         Name = producer.AName,
                         Bio = producer.ABio,
                         Dob = producer.ADob,
                         Sex = producer.ASex,
                     };
-                    context1.Producers.Add(pro);
-                    context1.SaveChanges();
-                    producer.AId = pro.Id;
-                }
+                    
+                    producer.AId = producersRepository.AddProducer(newProducer);
+               
             }
             catch (Exception e) { string s=e.HelpLink; }
             return Json(producer);
@@ -58,8 +63,8 @@ namespace IMBD.Controllers
         public ActionResult List()
         {
 
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Producers> Producers = conf.Producers.ToList();
+            
+            List<Producers> Producers = producersRepository.ListProducers();
 
             return View(Producers);
 
@@ -69,7 +74,7 @@ namespace IMBD.Controllers
 
         public ActionResult Add()
         {
-            //ImdbConfiguration conf = new ImdbConfiguration();
+            
             Producers producer = new Producers();
 
             return View(producer);
@@ -105,24 +110,22 @@ namespace IMBD.Controllers
 
         // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(Producers vm)
+        public ActionResult Create(Producers viewmodel)
         {
             try
             {
 
-                using (var context = new ImdbConfiguration())
-                {
-                    var pro = new Producers()
+                
+                    var producer = new Producers()
                     {
-                        Name = vm.Name,
-                        Bio = vm.Bio,
-                        Dob = vm.Dob,
-                        Sex = vm.Sex,
+                        Name = viewmodel.Name,
+                        Bio = viewmodel.Bio,
+                        Dob = viewmodel.Dob,
+                        Sex = viewmodel.Sex,
                     };
-                    context.Producers.Add(pro);
-                    context.SaveChanges();
+                producersRepository.AddProducer(producer);
 
-                }
+                
 
                 return RedirectToAction("Add");
             }
@@ -157,6 +160,7 @@ namespace IMBD.Controllers
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
+            producersRepository.DeleteProducer(id);
             return View();
         }
 

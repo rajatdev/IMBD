@@ -11,20 +11,29 @@ namespace IMBD.Repository
 {
     public class ActorsRepository:IActors
     {
-        public static ImdbConfiguration context;
+        public static ImdbConfiguration _context;
 
         public ActorsRepository()
         {
-            context = new ImdbConfiguration();
+            _context = new ImdbConfiguration();
         }
 
         public List<Actors> ListActors()
         {
-            return context.Actors.ToList();
+            return _context.Actors.ToList();
         }
-        public void AddActor(Actors actor)
+        public int AddActor(Actors actor)
         {
-            string b=actor.Bio;
+            _context.Actors.Add(actor);
+            _context.SaveChanges();
+            return actor.Id;
+        }
+        public void DeleteActor(int id)
+        {
+            var actor = new Actors { Id = id };
+            _context.Actors.Attach(actor);
+            _context.Actors.Remove(actor);
+            _context.SaveChanges();
         }
     }
 }

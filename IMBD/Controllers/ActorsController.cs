@@ -5,29 +5,34 @@ using System.Web;
 using System.Web.Mvc;
 using IMBD.Models;
 using IMBD.ViewModel;
+using IMBD.Repository;
 using IMBD.Confuguration;
 
 namespace IMBD.Controllers
 {
     public class ActorsController : Controller
     {
+        ActorsRepository actorsRepository;
+
+
+        public ActorsController()
+        {
+
+
+            actorsRepository = new ActorsRepository();
+
+
+        }
         public ActionResult View(int id)
         {
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Actors> actors = conf.Actors.ToList();
+            //ImdbConfiguration conf = new ImdbConfiguration();
+            List<Actors> actors = actorsRepository.ListActors();
 
-            Actors ac = new Actors();
+            Actors actor = actors.Where(a => a.Id == id).Single();
 
-            foreach (Actors a in actors)
-            {
-                if (id == a.Id)
-                {
-                    ac = a;
-                    break;
-                }
-            }
+            
 
-            return View(ac);
+            return View(actor);
            
 
         }
@@ -36,8 +41,8 @@ namespace IMBD.Controllers
         public ActionResult List()
         {
 
-            ImdbConfiguration conf = new ImdbConfiguration();
-            List<Actors> actors = conf.Actors.ToList();
+
+            List<Actors> actors = actorsRepository.ListActors();
 
             return View(actors);
 
@@ -47,19 +52,17 @@ namespace IMBD.Controllers
         public JsonResult AddActor(AddMovieViewModel actor)
         {
             try { 
-            using (var context = new ImdbConfiguration())
-            {
-                var act = new Actors()
+            
+                var newActor = new Actors()
                 {
                     Name = actor.AName,
                     Bio = actor.ABio,
                     Dob = actor.ADob,
                     Sex = actor.ASex,
                 };
-                context.Actors.Add(act);
-                context.SaveChanges();
-                actor.AId = act.Id;
-            }
+                
+                actor.AId = actorsRepository.AddActor(newActor);
+            
             }
             catch (Exception e) { string s = e.HelpLink; }
             return Json(actor);
@@ -103,25 +106,19 @@ namespace IMBD.Controllers
 
         // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(Actors vm)
+        public ActionResult Create(Actors viewmodel)
         {
-            try
-            {
-                
-                using (var context = new ImdbConfiguration())
-                {
-                    var act = new Actors()
+            try { 
+                    var newActor = new Actors()
                     {
-                        Name = vm.Name,
-                        Bio = vm.Bio,
-                        Dob = vm.Dob,
-                        Sex = vm.Sex,
+                        Name = viewmodel.Name,
+                        Bio = viewmodel.Bio,
+                        Dob = viewmodel.Dob,
+                        Sex = viewmodel.Sex,
                     };
-                    context.Actors.Add(act);
-                    context.SaveChanges();
+            actorsRepository.AddActor(newActor);
 
-                }
-
+               
                 //cont.Movies.Add(std);
                 // TODO: Add insert logic here
 
@@ -159,14 +156,11 @@ namespace IMBD.Controllers
         public ActionResult Delete(int id)
         {
 
-            using (var context = new ImdbConfiguration())
-            {
-               
-                var actor = new Actors { Id = id };
-                context.Actors.Attach(actor);
-                context.Actors.Remove(actor);
-                context.SaveChanges();
-            }
+
+            // var actor = new Actors { Id = id };
+
+            actorsRepository.DeleteActor(id);
+           
             return RedirectToAction("List");
         }
 

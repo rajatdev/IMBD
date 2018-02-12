@@ -12,5 +12,7 @@ namespace IMBD.Interfaces
     interface IProducers
     {
         List<Producers> ListProducers();
+        int AddProducer(Producers producer);
+        void DeleteProducer(int id);
     }
 }

@@ -12,6 +12,7 @@ namespace IMBD.Interfaces
     interface IActors
     {
         List<Actors> ListActors();
-        void AddActor(Actors actor);
+        int AddActor(Actors actor);
+        void DeleteActor(int id);
     }
 }
