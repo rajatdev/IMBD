@@ -10,8 +10,8 @@
 
 
 <script src="~/Scripts/jquery-1.12.4.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
+@*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+<script src="~/Scripts/jquery.validate.js"></script>
 
 <script type="text/javascript">
     function AddingProducer() {
@@ -89,31 +89,50 @@
     {
         @class = "form-control",
         oninput = "setCustomValidity('')",
-        name = "Movie Name", required = true,
+        name = "Movie Name",
+        required = true,
         oninvalid = "this.setCustomValidity('Please Enter a name for the movie')"
-     })
+    })
     @*@Html.ValidationMessageFor(m=>m.Name,"Please enter a Name")*@
-</div>
+
+    <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+        Please Enter A Name for the Movie
+    </div>
+
+
+
+
     <div class="form-group">
         <label>Plot:</label>
         @Html.TextAreaFor(m => m.Plot, new
         {
-       @class = "form-control",
-       required="required",
-       oninput = "setCustomValidity('')",
-       oninvalid = "this.setCustomValidity('Please Enter a Plot for the movie')"})
+            @class = "form-control",
+            required = "required",
+            oninput = "setCustomValidity('')",
+            oninvalid = "this.setCustomValidity('Please Enter a Plot for the movie')"
+        })
     </div>
+    <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+        Please Enter A Plot for the Movie
+    </div>
+
 
     <div class="form-group">
         <label>Release Date:</label>
         <br />
-        @Html.TextBoxFor(m => m.ReleaseDate, new { @class = "form-control",
-       type = "date",
-   })
-
-
+        @Html.TextBoxFor(m => m.ReleaseDate, new
+        {
+            @class = "form-control",
+            reqired = "true",
+            type = "date",
+        })
     </div>
-
+    <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+        Please Enter A Date for the Movie
+    </div>
 
     <div class="form-group">
         <label for="Producers">Add Producers:</label>
@@ -121,7 +140,12 @@
         <div id="plist">
             @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "Producerdd" })
         </div>
-            <div class="col-md-1" id="prodiv">
+        <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close" >×</a>
+            Please Enter select a Producer for the Movie
+        </div>
+
+        <div class="col-md-1" id="prodiv">
             <button id="btnAddProducer" type="button"
                     class="btn btn-primary" data-target="#ProducerModal" data-toggle="modal">
                 Add Producer
@@ -139,6 +163,11 @@
             @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })
 
         </div>
+        <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close" >×</a>
+            Please select some Actors for the Movie
+        </div>
+
         <div class="col-md-1" id="actdiv">
             <button id="btnAddActor" type="button"
                     class="btn btn-primary" data-target="#ActorModal" data-toggle="modal">
@@ -153,11 +182,7 @@
         @Html.TextBoxFor(m => m.File, new { @class = "form-control", type = "file" })
     </div>
 
-    <div class="row">
-
-
-
-    </div>
+</div>
 
 
     <div class="row">
@@ -261,97 +286,6 @@
 
 
 
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-
-            
-                $('form[name="AddMovieForm"]').on("submit", function (e) {
-                    // Find all <form>s with the name "register", and bind a "submit" event handler
-
-                    // Find the <input /> element with the name "username"
-                    var moviename = $(this).find('input[name="MovieName"]');
-                    alert("bxhs");
-                    if (moviename.val() == "") {
-                        // If its value is empty
-                        // Stop the form from submitting
-                        alert("bxhs");
-                        $("#NameAlert").hidden = "false";    // Show the Alert
-                    } else {
-                        e.preventDefault();    // Not needed, just for demonstration
-                        $("#formAlert").slideUp(400, function () {    // Hide the Alert (if visible)
-                            alert("Would be submitting form");    // Not needed, just for demonstration
-                            username.val("");    // Not needed, just for demonstration
-                        });
-                    }
-                });
-
-
-                if (!$('#MovieName').val()) {
-                    //     $("#NameAlert").show();
-                    //if ($("#MovieName").parent().next(".validation").length == 0) // only add if not added
-                    //{
-                    //    $("#MovieName").parent().after(" <div class=\"alert alert- danger fade in alert - dismissable\" id=\"NameAlert\" > < a href= \"#\" class=\"close\" data- dismiss=\"alert\" aria- label=\"close\" title= \"close\" >×</a > Please Enter A name </div >   ");
-
-                    //}
-                }
-                else {
-                    // $("#NameAlert").hidden();
-                    // $("#MovieName").parent().next(".validation").remove(); // remove it
-                }
-
-
-
-
-
-        //    $("#btnAddActor").click(function () {
-        //    //    $("#Actor   Modal").modal('show');
-        //    });
-
-        //    $("#ActorHideModal").click(function () {
-        //      //  $("#ActorModal").modal('hide');
-        //    });
-
-        //    $("#btnAddProducer").click(function () {
-        //      //  $("#ProducerModal").modal('show');
-        //    });
-
-        //    $("#ProducerHideModal").click(function () {
-        //      //  $("#ProducerModal").modal('hide');
-        //    });
-
-        //    $("#AddMovie").click(function () {
-        //       // alert("New Movie Added");
-        //    });
-        //});
-    </script>
-
-
-
     @*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
 
 
-
-
-    @section Scripts {
-
-        @Scripts.Render("~/bundles/jqueryui")
-        @Styles.Render("~/Content/cssjqryUi")
-
-
-
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('input[type=datetime]').datepicker({
-                    dateFormat: "dd/M/yy",
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: "-60:+0"
-                });
-               
-
-            });
-        </script>
-    }

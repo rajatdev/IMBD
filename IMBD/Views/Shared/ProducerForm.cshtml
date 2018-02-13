@@ -4,13 +4,13 @@
     Layout = null;
 }
 
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+@*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
 <script src="~/Scripts/jquery.validate.js"></script>
 <form id="ProducerForm">
     <div class="form-horizontal">
         <div class="form-group">
             <label>Producer Name</label>
-            @Html.TextBoxFor(m => m.AName, new { @class = "form-control", id = "name", oninput = "setCustomValidity('')", name = "Producer Name", required = "true", oninvalid = "this.setCustomValidity('Please Enter a name for the Producer')" })
+            @Html.TextBoxFor(m => m.AName, new { @class = "form-control", id = "name", oninput = "setCustomValidity('')", name = "Producer Name", required = true, oninvalid = "this.setCustomValidity('Please Enter a name for the Producer')" })
         </div>
         <div class="form-group">
             <label>Bio</label>

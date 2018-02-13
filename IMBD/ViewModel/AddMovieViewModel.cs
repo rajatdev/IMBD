@@ -25,7 +25,7 @@ namespace IMBD.ViewModel
         // public int[] actoridarray;
         public List<Actors> Actors;
         public HttpPostedFileBase File { get; set; }
-        public string FilePath;
+        public string formattedDate;
         public Movies selectedM;
         public Producers selectedP;
         public ICollection<Actors> selectedA;

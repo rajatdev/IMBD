@@ -112,12 +112,14 @@ namespace IMBD.Controllers
             try
             {
                 String s = viewmodel.Name;
-                String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
-                //String path = ConfigurationManager.AppSettings["Path"];
+                String ss = Environment.CurrentDirectory;
+               // String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
+               // String path2 = HttpContext("~/Data/data.html");
+                String path1 = ConfigurationManager.AppSettings["Path"];
                 //   viewmodel.File.SaveAs(path+viewmodel.Id);
 
-
-                Image source = Image.FromStream(viewmodel.File.InputStream);
+                path1 = s + path1;
+               // Image source = Image.FromStream(viewmodel.File.InputStream);
 
                 var NewMovie = new Movies()
                 {
@@ -130,7 +132,7 @@ namespace IMBD.Controllers
                 moviesRepository.AddMovie(NewMovie);
 
 
-                viewmodel.File.SaveAs(Path.Combine(@path, "" + NewMovie.Id + ".jpg"));
+                viewmodel.File.SaveAs(Path.Combine(@path1, "" + NewMovie.Id + ".jpg"));
 
                 foreach (int i in viewmodel.ActorIds)
                 {
@@ -185,8 +187,8 @@ namespace IMBD.Controllers
             }
 
 
-            string temp = selectedmovie.ReleaseDate.ToString("yyyy-MM-dd");
-            viewmodel.ReleaseDate = Convert.ToDateTime(temp);
+            viewmodel.formattedDate = selectedmovie.ReleaseDate.ToString("yyyy-MM-dd");
+           // viewmodel.ReleaseDate = Convert.ToDateTime(temp);
             viewmodel.Actors = actors;
             viewmodel.Prod = producers;
             viewmodel.Plot = selectedmovie.Plot;
