@@ -6,45 +6,44 @@
 }
 
 <h2>Movies List</h2>
-<table border="1">
-    <tr>
-        <th><h1><b>Poster Image</b></h1></th>
-        <th><h1><b>Movie name</b></h1></th>
-        <th><h1><b>Year Of Release</b></h1></th>
-        <th><h1><b>Plot</b></h1></th>
-        <th><h1><b>Producer</b></h1></th>
-        <th><h1><b>Actors</b></h1></th>
-        <th><h1><b>Modify</b></h1></th>
-        <th><h1><b>Delete</b></h1></th>
-       
-    </tr>
 
-    @foreach (Movies movie in @Model)
+
+<div class="w3-padding w3-white notranslate">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Poster Image</th>
+                <th>Movie name</th>
+                <th>Year Of Release</th>
+                <th>Plot</th>
+                <th>Producer</th>
+                <th>Actors</th>
+                <th>Modify</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Movies movie in @Model)
     {
 
-    <tr>
-        @{ 
-            string image = "~/Content/Posters/" + movie.Id + ".jpg";
-        }
-        <td><img src="@Url.Content(image)"/></td>
-        <td>@Html.ActionLink(movie.Name, "view", new { id = movie.Id })</td>
-        <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
-        <td>@movie.Plot</td>
-        <td>@movie.producer.Name</td>
-        <td>
-            //@*  @foreach (var actor in movie.Actor_movie)
-        {
-        //   @actor.Id*@
+        <tr>
+            @{
+        string image = "~/Content/Posters/" + movie.Id + ".jpg";
             }
+            <td><img src="@Url.Content(image)" height="80" width="80" /></td>
+            <td>@Html.ActionLink(movie.Name, "view", new { id = movie.Id })</td>
+            <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
+            <td>@movie.Plot</td>
+            <td>@movie.producer.Name</td>
+            <td>Under Construction</td>
+            <td>@Html.ActionLink("Modify", "Modify", new { id = movie.Id }, new { onclick = "return confirm('Are you sure want you want to modify?');" })</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = movie.Id }, new { onclick = "return confirm('Are you sure you want to delete?');" })</td>
 
 
-        </td>
-        <td>@Html.ActionLink("Modify", "Modify", new { id = movie.Id },new { onclick = "return confirm('Are you sure want you want to modify?');" })</td>
-        <td>@Html.ActionLink("Delete", "Delete", new { id = movie.Id }, new { onclick = "return confirm('Are you sure you want to delete?');" })</td>
-       
-        
 
-    </tr>
-    }
+        </tr>
+}
 
-</table>
+        </tbody>
+    </table>
+</div>

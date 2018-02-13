@@ -10,6 +10,7 @@ using System.IO;
 using System.Drawing;
 using IMBD.Repository;
 using System.Configuration;
+using IMBD.Helper;
 
 namespace IMBD.Controllers
 {
@@ -113,12 +114,12 @@ namespace IMBD.Controllers
             {
                 String s = viewmodel.Name;
                 String ss = Environment.CurrentDirectory;
-               // String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
-               // String path2 = HttpContext("~/Data/data.html");
-                String path1 = ConfigurationManager.AppSettings["Path"];
+                // String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
+                // String path2 = HttpContext("~/Data/data.html");
+                String path = PosterData.GetPosterPath();
                 //   viewmodel.File.SaveAs(path+viewmodel.Id);
-
-                path1 = s + path1;
+               
+              //  path1 = ss + path1;
                // Image source = Image.FromStream(viewmodel.File.InputStream);
 
                 var NewMovie = new Movies()
@@ -132,7 +133,11 @@ namespace IMBD.Controllers
                 moviesRepository.AddMovie(NewMovie);
 
 
-                viewmodel.File.SaveAs(Path.Combine(@path1, "" + NewMovie.Id + ".jpg"));
+                viewmodel.File.SaveAs(Path.Combine(Server.MapPath(path)+"" + NewMovie.Id + ".jpg"));
+
+
+
+
 
                 foreach (int i in viewmodel.ActorIds)
                 {
