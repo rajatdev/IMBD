@@ -10,179 +10,115 @@
 
 
 <script src="~/Scripts/jquery-1.12.4.js"></script>
-@*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
-<script src="~/Scripts/jquery.validate.js"></script>
-
-<script type="text/javascript">
-    function AddingProducer() {
-        $.ajax({
-            type: "POST",
-            url: "/Producers/AddProducer",
-            data: $("#ProducerForm").serialize(),
-            success: function (response) {
-                var message = "Name:" + response.AName;
-                message += "\nBio: " + response.ABio;
-                message += "\nSex: " + response.ASex;
-                message += "Id="+response.AId;
-
-                var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
-
-
-
-                $("#Producerdd").append(newOption);
-                $('#Producerdd').trigger('change.select2');
-                //    $("#ProducerModal").modal('hide');
-                alert(message);
-            
-                $('#ProducerModal').modal('toggle');
-                
-            },
-            failure: function (response) {
-                alert("Error occured.");
-            }
-        });
-    }
-
-    function AddingActor() {
-        $.ajax({
-            type: "POST",
-            url: "/Actors/AddActor",
-            data: $("#ActorForm").serialize(),
-            success: function (response) {
-                var message = "Name:" + response.AName;
-                message += "\nBio: " + response.ABio;
-                message += "\nSex: " + response.ASex;
-                message += "Id=" + response.AId;
-
-                var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
-              
-
-
-                $("#Actordd").append(newOption);
-               $('#Actordd').trigger('change.select2');
-            //    $("#ProducerModal").modal('hide');
-                alert(message);
-                $('#ActorModal').modal('toggle');
-
-            },
-            failure: function (response) {
-                alert("Error occured.");
-            }
-        });
-    }
-
-
-
-</script>
-
-
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.full.js"></script>
 
 
 
 
 @using (Html.BeginForm("create", "movies", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
 {
-<div class="form-group">
-    <label>Name:</label>
-    @Html.TextBoxFor(m => m.Name, new
-    {
-        @class = "form-control",
-        oninput = "setCustomValidity('')",
-        name = "Movie Name",
-        required = true,
-        oninvalid = "this.setCustomValidity('Please Enter a name for the movie')"
-    })
-    @*@Html.ValidationMessageFor(m=>m.Name,"Please enter a Name")*@
-
-    <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-        Please Enter A Name for the Movie
-    </div>
-
-
-
 
     <div class="form-group">
-        <label>Plot:</label>
-        @Html.TextAreaFor(m => m.Plot, new
+        <label>Name:</label>
+        @Html.TextBoxFor(m => m.Name, new
         {
             @class = "form-control",
+            oninput = "$('#nameAlert').hide()",
             required = "required",
-            oninput = "setCustomValidity('')",
-            oninvalid = "this.setCustomValidity('Please Enter a Plot for the movie')"
+            oninvalid = "$('#nameAlert').show()",
+           
         })
-    </div>
-    <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-        Please Enter A Plot for the Movie
-    </div>
-
-
-    <div class="form-group">
-        <label>Release Date:</label>
-        <br />
-        @Html.TextBoxFor(m => m.ReleaseDate, new
-        {
-            @class = "form-control",
-            reqired = "true",
-            type = "date",
-        })
-    </div>
-    <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-        Please Enter A Date for the Movie
-    </div>
-
-    <div class="form-group">
-        <label for="Producers">Add Producers:</label>
-        <br />
-        <div id="plist">
-            @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "Producerdd" })
-        </div>
-        <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close" >×</a>
-            Please Enter select a Producer for the Movie
+        @*@Html.ValidationMessageFor(m=>m.Name,"Please enter a Name")*@
+       
+        <div class="alert alert-danger fade in alert-dismissable" hidden="hidden" id="nameAlert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            Please Enter a Name for the Movie
         </div>
 
-        <div class="col-md-1" id="prodiv">
-            <button id="btnAddProducer" type="button"
-                    class="btn btn-primary" data-target="#ProducerModal" data-toggle="modal">
-                Add Producer
-            </button>
+
+        <br/>
+
+        <div class="form-group">
+            <label>Plot:</label>
+            @Html.TextAreaFor(m => m.Plot, new
+       {
+           @class = "form-control",
+           required = "required",
+           oninput = "$('#plotAlert').hide()",
+           oninvalid = "$('#plotAlert').hide()"
+       })
         </div>
-    </div>
+        <div class="alert alert-danger fade in alert-dismissable" hidden="hidden" id="plotAlert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            Please Enter A Plot for the Movie
+        </div>
 
 
-    <div class="form-group" id="actfg">
-        <div id="ac">
-
-            <label id="acl">Add Actors:</label>
+        <div class="form-group">
+            <label>Release Date:</label>
             <br />
-
-            @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })
-
+            @Html.TextBoxFor(m => m.ReleaseDate, new
+            {
+                @class = "form-control",
+                reqired = "true",
+                type = "date",
+            })
         </div>
         <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close" >×</a>
-            Please select some Actors for the Movie
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            Please Enter A Date for the Movie
         </div>
 
-        <div class="col-md-1" id="actdiv">
-            <button id="btnAddActor" type="button"
-                    class="btn btn-primary" data-target="#ActorModal" data-toggle="modal">
-                Add Actor
-            </button>
+        <div class="form-group">
+            <label for="Producers">Add Producers:</label>
+            <br />
+            <div id="plist">
+                @Html.DropDownListFor(m => m.ProducerId, new SelectList(Model.Producers, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "Producerdd" })
+            </div>
+            <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                Please Enter select a Producer for the Movie
+            </div>
+
+            <div class="col-md-1" id="prodiv">
+                <button id="btnAddProducer" type="button"
+                        class="btn btn-primary" data-target="#ProducerModal" data-toggle="modal">
+                    Add Producer
+                </button>
+            </div>
         </div>
+
+
+        <div class="form-group" id="actfg">
+            <div id="ac">
+
+                <label id="acl">Add Actors:</label>
+                <br />
+
+                @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })
+
+            </div>
+            <div class="alert alert-danger fade in alert-dismissable" hidden="hidden">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                Please select some Actors for the Movie
+            </div>
+
+            <div class="col-md-1" id="actdiv">
+                <button id="btnAddActor" type="button"
+                        class="btn btn-primary" data-target="#ActorModal" data-toggle="modal">
+                    Add Actor
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="acl">Movie poster:</label>
+
+            @Html.TextBoxFor(m => m.File, new { @class = "form-control", type = "file" })
+        </div>
+
     </div>
-
-    <div class="form-group">
-        <label id="acl">Movie poster:</label>
-
-        @Html.TextBoxFor(m => m.File, new { @class = "form-control", type = "file" })
-    </div>
-
-</div>
 
 
     <div class="row">
@@ -191,61 +127,39 @@
         </div>
     </div>
 
-    <style>
-        #acl {
-            margin-left: -90px;
-        }
 
-        #actdiv {
-            left: 280px;
-            bottom: 30px;
-        }
-
-        #prodiv {
-            bottom: 35px;
-            left: 280px;
-        }
-
-        #am {
-            left: 90px;
-        }
-    </style>
 
     @*<script src="~/Scripts/chosen.jquery.js"></script>*@
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.full.js"></script>
 
-    <script type="text/javascript">
-        $('#Actordd').select2();
-        $('#Producerdd').select2();
-    </script>
+
+
 
 
     @*<link href="~/Content/chosen.css" rel="stylesheet" />*@
-    }
+}
 
 
-    @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
 
-    <div class="modal fade" tabindex="-1" id="ActorModal"
-         data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        ×
-                    </button>
-                    <h4 class="modal-title">Add new Actor</h4>
-                </div>
-                <div class="modal-body">
+<div class="modal fade" tabindex="-1" id="ActorModal"
+     data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title">Add new Actor</h4>
+            </div>
+            <div class="modal-body">
 
-                    @Html.Partial("ActorForm")
-
-                </div>
+                @Html.Partial("ActorForm")
 
             </div>
+
         </div>
     </div>
+</div>
 
 
 
@@ -254,38 +168,39 @@
 
 
 
-    @*This is the pop up for Producers*@
+@*This is the pop up for Producers*@
 
 
 
 
-    <div class="modal fade" tabindex="-2" id="ProducerModal"
-         data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        ×
-                    </button>
-                    <h4 class="modal-title">Add new Producer</h4>
-                </div>
-                <div class="modal-body">
-                    @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
-                    @Html.Partial("ProducerForm")
-
-                </div>
+<div class="modal fade" tabindex="-2" id="ProducerModal"
+     data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title">Add new Producer</h4>
+            </div>
+            <div class="modal-body">
+                @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+                @Html.Partial("ProducerForm")
 
             </div>
+
         </div>
     </div>
+</div>
 
 
 
 
+<script src="~/Scripts/IMBD_scripts/addMovie.js"></script>
+
+<link href="~/Content/IMDB_Styles/AddMovie.css" rel="stylesheet" />
 
 
 
-
-    @*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
-
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
 

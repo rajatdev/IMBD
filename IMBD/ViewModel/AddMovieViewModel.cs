@@ -13,26 +13,26 @@ namespace IMBD.ViewModel
         public DateTime ReleaseDate { get; set; }
         public string Plot { get; set; }
         public int PosterId { get; set; }
-        public string PosterPath { get; set; }
+     //   public string PosterPath { get; set; }
         // public int ProducerId { get; set; }
         //   public ICollection<Actor_Movies> Actor_movie { get; set; }
-        public int producer { get; set; }
-        public String actor { get; set; }
+        public int ProducerId { get; set; }
+     //   public String actor { get; set; }
         public List<int> ActorIds { get; set; }
-        public ICollection<Producers> Prod;
+        public ICollection<Producers> Producers;
      //   public ICollection<Actors> Actors;
 
         // public int[] actoridarray;
         public List<Actors> Actors;
         public HttpPostedFileBase File { get; set; }
-        public string formattedDate;
-        public Movies selectedM;
-        public Producers selectedP;
-        public ICollection<Actors> selectedA;
-        public int AId { get; set; }
-        public string AName { get; set; }
-        public string ASex { get; set; }
-        public DateTime ADob { get; set; }
-        public string ABio { get; set; }
+        public string FormattedDate;
+        public Movies SelectedMovie;
+        public Producers SelectedProducer;
+        public ICollection<Actors> SelectedActors;
+        public int ModalId { get; set; }
+        public string ModalName { get; set; }
+        public string ModalSex { get; set; }
+        public DateTime ModalDob { get; set; }
+        public string ModalBio { get; set; }
     }
 }

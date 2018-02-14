@@ -14,21 +14,21 @@ namespace IMBD.Controllers
     {
 
        
-        ProducersRepository producersRepository;
+        ProducersRepository _producersRepository;
        
 
         public ProducersController()
         {
           
 
-            producersRepository = new ProducersRepository();
+            _producersRepository = new ProducersRepository();
 
 
         }
         public ActionResult View(int id)
         {
             
-            List<Producers> Producers = producersRepository.ListProducers();
+            List<Producers> Producers = _producersRepository.ListProducers();
 
             Producers producer = Producers.Where(p => p.Id == id).Single();
 
@@ -47,13 +47,13 @@ namespace IMBD.Controllers
                 
                     var newProducer = new Producers()
                     {
-                        Name = producer.AName,
-                        Bio = producer.ABio,
-                        Dob = producer.ADob,
-                        Sex = producer.ASex,
+                        Name = producer.ModalName,
+                        Bio = producer.ModalBio,
+                        Dob = producer.ModalDob,
+                        Sex = producer.ModalSex,
                     };
                     
-                    producer.AId = producersRepository.AddProducer(newProducer);
+                    producer.ModalId = _producersRepository.AddProducer(newProducer);
                
             }
             catch (Exception e) { string s=e.HelpLink; }
@@ -64,7 +64,7 @@ namespace IMBD.Controllers
         {
 
             
-            List<Producers> Producers = producersRepository.ListProducers();
+            List<Producers> Producers = _producersRepository.ListProducers();
 
             return View(Producers);
 
@@ -110,7 +110,7 @@ namespace IMBD.Controllers
 
         // POST: Movies/Create
         [HttpPost]
-        public ActionResult Create(Producers viewmodel)
+        public ActionResult Create(Producers viewModel)
         {
             try
             {
@@ -118,12 +118,12 @@ namespace IMBD.Controllers
                 
                     var producer = new Producers()
                     {
-                        Name = viewmodel.Name,
-                        Bio = viewmodel.Bio,
-                        Dob = viewmodel.Dob,
-                        Sex = viewmodel.Sex,
+                        Name = viewModel.Name,
+                        Bio = viewModel.Bio,
+                        Dob = viewModel.Dob,
+                        Sex = viewModel.Sex,
                     };
-                producersRepository.AddProducer(producer);
+                _producersRepository.AddProducer(producer);
 
                 
 
@@ -160,7 +160,7 @@ namespace IMBD.Controllers
         // GET: Movies/Delete/5
         public ActionResult Delete(int id)
         {
-            producersRepository.DeleteProducer(id);
+            _producersRepository.DeleteProducer(id);
             return View();
         }
 

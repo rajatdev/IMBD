@@ -12,21 +12,21 @@ namespace IMBD.Controllers
 {
     public class ActorsController : Controller
     {
-        ActorsRepository actorsRepository;
+        ActorsRepository _actorsRepository;
 
 
         public ActorsController()
         {
 
 
-            actorsRepository = new ActorsRepository();
+            _actorsRepository = new ActorsRepository();
 
 
         }
         public ActionResult View(int id)
         {
             //ImdbConfiguration conf = new ImdbConfiguration();
-            List<Actors> actors = actorsRepository.ListActors();
+            List<Actors> actors = _actorsRepository.ListActors();
 
             Actors actor = actors.Where(a => a.Id == id).Single();
 
@@ -42,7 +42,7 @@ namespace IMBD.Controllers
         {
 
 
-            List<Actors> actors = actorsRepository.ListActors();
+            List<Actors> actors = _actorsRepository.ListActors();
 
             return View(actors);
 
@@ -55,13 +55,13 @@ namespace IMBD.Controllers
             
                 var newActor = new Actors()
                 {
-                    Name = actor.AName,
-                    Bio = actor.ABio,
-                    Dob = actor.ADob,
-                    Sex = actor.ASex,
+                    Name = actor.ModalName,
+                    Bio = actor.ModalBio,
+                    Dob = actor.ModalDob,
+                    Sex = actor.ModalSex,
                 };
                 
-                actor.AId = actorsRepository.AddActor(newActor);
+                actor.ModalId = _actorsRepository.AddActor(newActor);
             
             }
             catch (Exception e) { string s = e.HelpLink; }
@@ -116,7 +116,7 @@ namespace IMBD.Controllers
                         Dob = viewmodel.Dob,
                         Sex = viewmodel.Sex,
                     };
-            actorsRepository.AddActor(newActor);
+            _actorsRepository.AddActor(newActor);
 
                
                 //cont.Movies.Add(std);
@@ -159,7 +159,7 @@ namespace IMBD.Controllers
 
             // var actor = new Actors { Id = id };
 
-            actorsRepository.DeleteActor(id);
+            _actorsRepository.DeleteActor(id);
            
             return RedirectToAction("List");
         }

@@ -19,12 +19,12 @@
             url: "/Producers/AddProducer",
             data: $("#ProducerForm").serialize(),
             success: function (response) {
-                var message = "Name:" + response.AName;
-                message += "\nBio: " + response.ABio;
-                message += "\nSex: " + response.ASex;
-                message += "Id=" + response.AId;
+                var message = "Name:" + response.ModalName;
+                message += "\nBio: " + response.ModalBio;
+                message += "\nSex: " + response.ModalSex;
+                message += "Id=" + response.ModalId;
 
-                var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
+                var newOption = "<option value='" + response.ModalId + "'>" + response.ModalName + "</option>";
 
 
 
@@ -48,12 +48,12 @@
             url: "/Actors/AddActor",
             data: $("#ActorForm").serialize(),
             success: function (response) {
-                var message = "Name:" + response.AName;
-                message += "\nBio: " + response.ABio;
-                message += "\nSex: " + response.ASex;
-                message += "Id=" + response.AId;
+                var message = "Name:" + response.ModalName;
+                message += "\nBio: " + response.ModalBio;
+                message += "\nSex: " + response.ModalSex;
+                message += "Id=" + response.ModalId;
 
-                var newOption = "<option value='" + response.AId + "'>" + response.AName + "</option>";
+                var newOption = "<option value='" + response.ModalId + "'>" + response.ModalName + "</option>";
 
 
 
@@ -91,7 +91,7 @@
             name = "Movie Name",
             required = true,
             oninvalid = "this.setCustomValidity('Please Enter a name for the movie')",
-            Value = Model.selectedM.Name
+            Value = Model.SelectedMovie.Name
         })
 
     </div>
@@ -116,7 +116,7 @@
        @class = "form-control",
        id="Rd",
        type = "date",
-       Value=Model.formattedDate
+       Value=Model.FormattedDate
    })
 
 
@@ -127,7 +127,7 @@
         <label for="Producers">Add Producers:</label>
         <br />
         <div id="plist">
-            @Html.DropDownListFor(m => m.producer, new SelectList(Model.Prod, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "Producerdd" })
+            @Html.DropDownListFor(m => m.ProducerId, new SelectList(Model.Producers, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "Producerdd" })
             
         
         </div>
@@ -155,7 +155,7 @@
 
 
 
-            if (Model != null && Model.selectedA.Contains(actor))
+            if (Model != null && Model.SelectedActors.Contains(actor))
             {
                 <option value=@actor.Id selected>@actor.Name</option>
 
@@ -179,7 +179,7 @@ else
     <div class="form-group">
         <label id="acl">Movie poster:</label>
         @{
-            string image = "~/Content/Posters/" + Model.selectedM.Id + ".jpg";
+            string image = "~/Content/Posters/" + Model.SelectedMovie.Id + ".jpg";
         }
         @Html.TextBoxFor(m => m.File, new { @class = "form-control", type = "file" })
     </div>
@@ -299,17 +299,16 @@ else
 <script type="text/javascript">
         $(document).ready(function () {
           
-            var year = @Model.selectedM.ReleaseDate.Year;
+            @*var year = @Model.selectedM.ReleaseDate.Year;
             var month = @Model.selectedM.ReleaseDate.Month;
             var day = @Model.selectedM.ReleaseDate.Day;
 
-            var setDate = new Date(day + "-" + month + "-" + year ); 
+            var setDate = new Date(day + "-" + month + "-" + year );*@ 
        
-          //  $('#Rd').datepicker('setDate', @Model.selectedM.ReleaseDate);
        
-            $('#Producerdd').val(@Model.selectedP.Id);
+            $('#Producerdd').val(@Model.SelectedProducer.Id);
             $('#Producerdd').trigger('change');
-            $('#select2-Producerdd-container').text('@Model.selectedP.Name');
+            $('#select2-Producerdd-container').text('@Model.SelectedProducer.Name');
             @*     @{
                  int i = 0;
                  string[] actorName = new string[100];
