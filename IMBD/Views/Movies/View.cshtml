@@ -6,9 +6,14 @@
 }
 
 <h2>ViewMovie</h2>
-
-<h2>@Model.Name</h2>
-<h2>@Model.producer.Name</h2>
+@{
+    string image = "~/Content/Posters/" + Model.Id + ".jpg";
+}
+<img src="@Url.Content(image)" />
+<h2>Movie Name:</h2><h4>@Model.Name</h4>
+<h2>Release Date:</h2><h4>@Model.ReleaseDate.Month/@Model.ReleaseDate.Day/@Model.ReleaseDate.Year</h4>
+<h2>Producer:</h2><h4>@Model.producer.Name</h4>
+<h2>Actors:</h2>
 @if (Model.Actor_movie.Count == 0)
 {
     <text>No one has Acted in this movie</text>
@@ -18,10 +23,16 @@ else
     <ul>
         @foreach (var actor in Model.Actor_movie)
         {
-            <li>@actor.Id</li>
+            <li>@actor.Actor.Name</li>
         }
 
     </ul>
 }
+
+
+
+
+
+
 
 

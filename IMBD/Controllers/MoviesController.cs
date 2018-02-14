@@ -54,7 +54,14 @@ namespace IMBD.Controllers
 
             List<Movies> movies = _moviesRepository.ListMovie();
 
-            return View(movies);
+
+            using(var c = new ImdbConfiguration())
+            {
+                var x = c.Actor_Movies.Include("Actor").ToList();
+            }
+
+
+                return View(movies);
 
         }
 

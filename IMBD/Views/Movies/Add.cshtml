@@ -10,10 +10,8 @@
 
 
 <script src="~/Scripts/jquery-1.12.4.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.full.js"></script>
-
-
+<script src="~/Scripts/select2.js"></script>
+<link href="~/Content/css/select2.css" rel="stylesheet" />
 
 
 @using (Html.BeginForm("create", "movies", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
@@ -27,27 +25,27 @@
             oninput = "$('#nameAlert').hide()",
             required = "required",
             oninvalid = "$('#nameAlert').show()",
-           
+
         })
         @*@Html.ValidationMessageFor(m=>m.Name,"Please enter a Name")*@
-       
+
         <div class="alert alert-danger fade in alert-dismissable" hidden="hidden" id="nameAlert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
             Please Enter a Name for the Movie
         </div>
 
 
-        <br/>
+        <br />
 
         <div class="form-group">
             <label>Plot:</label>
             @Html.TextAreaFor(m => m.Plot, new
-       {
-           @class = "form-control",
-           required = "required",
-           oninput = "$('#plotAlert').hide()",
-           oninvalid = "$('#plotAlert').hide()"
-       })
+            {
+                @class = "form-control",
+                required = "required",
+                oninput = "$('#plotAlert').hide()",
+                oninvalid = "$('#plotAlert').hide()"
+            })
         </div>
         <div class="alert alert-danger fade in alert-dismissable" hidden="hidden" id="plotAlert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
@@ -193,7 +191,8 @@
     </div>
 </div>
 
-
+<% Styles.Render("~/Content/addMovie")%>
+<% Scripts.Render("~/bundles/addMovie")%>
 
 
 <script src="~/Scripts/IMBD_scripts/addMovie.js"></script>

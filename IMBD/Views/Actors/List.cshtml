@@ -6,27 +6,35 @@
 }
 
 <h2>Actors List</h2>
-<table border="1">
-    <tr>
-        <th><h1><b>Actor name</b></h1></th>
-        <th><h1><b>Bio</b></h1></th>
-        <th><h1><b>Date Of Birth</b></h1></th>
-        <th><h1><b>Sex</b></h1></th>
-        <th><h1><b>Modify</b></h1></th>
-        <th><h1><b>Delete</b></h1></th>
-    </tr>
 
-    @foreach (Actors actor in @Model)
+
+
+<div class="w3-padding w3-white notranslate">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Actor name</th>
+                <th>Bio</th>
+                <th>Date Of Birth</th>
+                <th>Sex</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (Actors actor in @Model)
     {
 
-    <tr>
-        <td>@Html.ActionLink(actor.Name, "view", new { id = actor.Id })</td>
-        <td>@actor.Bio</td>
-        <td>@actor.Dob</td>
-        <td>@actor.Sex</td>
-        <td>@Html.ActionLink("Modify", "Modify", new { id = actor.Id }, new { onclick = "return confirm('Are you sure want you want to modify?');" })</td>
-        <td>@Html.ActionLink("Delete", "Delete", new { id = actor.Id }, new { onclick = "return confirm('Are you sure you want to delete?');" })</td>
-    </tr>
-    }
+        <tr>
+            <td>@Html.ActionLink(actor.Name, "view", new { id = actor.Id })</td>
+            <td>@actor.Bio</td>
+            <td>@actor.Dob.Day/@actor.Dob.Month/@actor.Dob.Year</td>
+            <td>@actor.Sex</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = actor.Id }, new { onclick = "return confirm('Are you sure you want to delete?');" })</td>
+        </tr>
+}
+        </tbody>
+    </table>
+</div>
 
-</table>

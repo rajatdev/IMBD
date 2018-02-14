@@ -17,9 +17,10 @@ namespace IMBD.Confuguration
             this.Property(p => p.Id).HasColumnName("Id");
             this.Property(p => p.ActorId).HasColumnName("ActorId");
             this.Property(p => p.MovieId).HasColumnName("MovieId");
-        //    this.HasKey<int>(s => s.ActorId).HasRequired(s=>s.Actor);
-           
-           // this.HasRequired(s => s.Actor).WithRequiredPrincipal(a => a.Id);
+             this.HasRequired(s=>s.Actor);
+
+
+            //this.HasRequired(s => s.Actor).WithRequiredPrincipal(a => a.Id);
             /* this.HasMany(c => c.Actors)
               .WithRequired()
               .HasForeignKey(c => c.Id);

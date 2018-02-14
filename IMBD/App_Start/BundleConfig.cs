@@ -23,6 +23,12 @@ namespace IMBD
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+
+            bundles.Add(new ScriptBundle("~/bundles/addMovie").Include(
+                "~/Scripts/jquery-1.12.4.js",
+                "~/Scripts/select2.js",
+                "~/Scripts/IMBD_scripts/addMovie.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
@@ -31,6 +37,9 @@ namespace IMBD
             //css  
             bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
                    "~/Content/jquery-ui.css"));
+            bundles.Add(new StyleBundle("~/Content/addMovie").Include(
+                "~/Content/css/select2.css",
+                "~/Content/IMDB_Styles/AddMovie.css"));
         }
     }
 }

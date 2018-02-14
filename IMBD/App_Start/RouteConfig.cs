@@ -16,7 +16,7 @@ namespace IMBD
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "movies", action = "add", id = UrlParameter.Optional }
+                defaults: new { controller = "movies", action = "list", id = UrlParameter.Optional }
             );
         }
     }
