@@ -30,7 +30,9 @@
             @{
         string image = "~/Content/Posters/" + movie.Id + ".jpg";
             }
-            <td><img src="@Url.Content(image)" height="80" width="80" /></td>
+           
+            <td><img src="@Url.Content(image)" onerror="this.src='@movie.PosterId'" height="80" width="80" /></td>
+           
             <td>@Html.ActionLink(movie.Name, "view", new { id = movie.Id })</td>
             <td>@movie.ReleaseDate.Month/@movie.ReleaseDate.Day/@movie.ReleaseDate.Year</td>
             <td>@movie.Plot</td>

@@ -12,7 +12,7 @@ namespace IMBD.Interfaces
     interface IMovies
     {
         List<Movies> ListMovie();
-        void AddMovie(Movies movie);
+        int AddMovie(Movies movie, HttpPostedFileBase File);
 
         void ModifyMovie(Movies movie, List<int> actorids, HttpPostedFileBase File);
 

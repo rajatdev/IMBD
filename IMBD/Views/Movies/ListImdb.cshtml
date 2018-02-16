@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "ListImdb";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ListImdb</h2>
+
+@using (Html.BeginForm("addFromApi","movies", FormMethod.Post))
+{
+    <input type="text" name="movieName" />
+    <input type="submit" />
+}

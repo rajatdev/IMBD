@@ -1,4 +1,4 @@
-﻿#acl {
+﻿#label {
     margin-left: -75px;
 }
 
@@ -12,6 +12,10 @@
     left: 280px;
 }
 
-#am {
-    left: 120px;
+#submitdiv{
+    left: 30px;
+}
+
+#api{
+    left:60px;
 }

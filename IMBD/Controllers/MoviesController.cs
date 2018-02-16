@@ -11,6 +11,9 @@ using System.Drawing;
 using IMBD.Repository;
 using System.Configuration;
 using IMBD.Helper;
+using RestSharp;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace IMBD.Controllers
 {
@@ -65,10 +68,92 @@ namespace IMBD.Controllers
 
         }
 
-        public ActionResult PopUp()
+
+
+
+        public ActionResult ListImdb()
         {
+           
+            
+
+          //  int i = 1;
             return View();
         }
+
+        public ActionResult addFromApi(String movieName)
+        {
+            String url = Helper.Helper.GetMoviesApiPath() + movieName + "&" + Helper.Helper.GetMoviesApiKey();
+            var client = new RestClient(url);
+            IRestResponse response = client.Execute(new RestRequest());
+            List<Actors> actors = _actorsRepository.ListActors();
+            dynamic newMovie = JObject.Parse(response.Content);
+            if (newMovie!=null)
+            {
+                Movies movie = new Movies();
+                //   movie.Name = (String)newMovie.Value("Title");
+                if (newMovie.Title != null)
+                    movie.Name = newMovie.Title;
+                else
+                    return RedirectToAction("List");
+                if (newMovie.Plot != null || newMovie.Plot != "{N/A}")
+                    movie.Plot = newMovie.Plot;
+                else
+                    return RedirectToAction("List");
+                if (newMovie.Released != null || newMovie.Released != "{N/A}")
+                    movie.ReleaseDate = newMovie.Released;
+
+                //  Producers producer = new Producers { Id = 201 };
+                //movie.producer = producer;
+                movie.ProducerId = 201;
+                HttpPostedFileBase File = null;
+                int MovieId=0;
+                movie.PosterId = newMovie.Poster;
+                string actorData = newMovie.Actors;
+                string[] values = actorData.Split(',');
+                MovieId=_moviesRepository.AddMovie(movie, File);
+                foreach (var data in values)
+                {
+                    Actors actor = new Actors();
+                    int id=0;
+                    actor.Name = data;
+                    if (actors.Where(a => a.Name == data).Count() == 0)
+                        id = _actorsRepository.AddActor(actor);
+                    else
+                        id = actors.Where(a => a.Name == data).Single().Id;
+                    Actor_Movies actor_movie = new Actor_Movies();
+                    actor_movie.ActorId = id;
+                    actor_movie.MovieId = MovieId;
+                    _actor_MoviesRepository.Add(actor_movie);
+
+                }
+                //byte[] bytes;
+                //HttpWebRequest req = (HttpWebRequest)WebRequest.Create(newMovie.Poster);
+                //WebResponse resp = req.GetResponse();
+
+                //Stream stream = resp.GetResponseStream();
+                //using (BinaryReader br = new BinaryReader(stream))
+                //{
+                //    bytes = br.ReadBytes(500000);
+                //    br.Close();
+                //}
+                //resp.Close();
+
+
+
+               
+            }
+            else
+            {
+
+            }
+
+
+
+
+            return RedirectToAction("List");
+        }
+
+
 
         public ActionResult Add()
         {
@@ -123,7 +208,7 @@ namespace IMBD.Controllers
                 //String ss = Environment.CurrentDirectory;
                 // String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
                 // String path2 = HttpContext("~/Data/data.html");
-                String path = PosterData.GetPosterPath();
+            //    String path = Helper.Helper.GetPosterPath();
                 //   viewmodel.File.SaveAs(path+viewmodel.Id);
                
               //  path1 = ss + path1;
@@ -134,13 +219,13 @@ namespace IMBD.Controllers
                     Name = viewModel.Name,
                     ReleaseDate = viewModel.ReleaseDate,
                     Plot = viewModel.Plot,
-                    PosterId = 123,
+                    PosterId = "123",
                     ProducerId = viewModel.ProducerId
                 };
-                _moviesRepository.AddMovie(NewMovie);
+                _moviesRepository.AddMovie(NewMovie,viewModel.File);
 
 
-                viewModel.File.SaveAs(Path.Combine(Server.MapPath(path)+"" + NewMovie.Id + ".jpg"));
+              //  viewModel.File.SaveAs(Path.Combine(Server.MapPath(path)+"" + NewMovie.Id + ".jpg"));
 
 
 
@@ -219,7 +304,7 @@ namespace IMBD.Controllers
                     Name = viewModel.Name,
                     ReleaseDate = viewModel.ReleaseDate,
                     Plot = viewModel.Plot,
-                    PosterId = 123,
+                    PosterId = "123",
                     ProducerId = viewModel.ProducerId
                 };
                 _moviesRepository.ModifyMovie(movie, viewModel.ActorIds, viewModel.File);

@@ -91,7 +91,7 @@
         <div class="form-group" id="actfg">
             <div id="ac">
 
-                <label id="acl">Add Actors:</label>
+                <label id="label">Add Actors:</label>
                 <br />
 
                 @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })
@@ -111,7 +111,7 @@
         </div>
 
         <div class="form-group">
-            <label id="acl">Movie poster:</label>
+            <label id="label">Movie poster:</label>
 
             @Html.TextBoxFor(m => m.File, new { @class = "form-control", type = "file" })
         </div>
@@ -119,13 +119,18 @@
     </div>
 
 
-    <div class="row">
-        <div class="col-md-1" id="am">
+    <div class="form-group">
+        <div class="col-md-1" id="submitdiv">
             <button type="submit" id="AddMovie" class="btn btn-primary">Save</button>
         </div>
     </div>
-
-
+    
+     <div class="form-group" >
+        <div class="col-md-1" id="api">
+            <button type="button" id="AddMovieImdb" class="btn btn-primary" onclick="location.href='@Url.Action("ListImdb", "movies")'">Use Imdb api</button>
+        </div>
+    </div>
+    <br/>
 
     @*<script src="~/Scripts/chosen.jquery.js"></script>*@
 
@@ -190,9 +195,8 @@
         </div>
     </div>
 </div>
-
-<% Styles.Render("~/Content/addMovie")%>
-<% Scripts.Render("~/bundles/addMovie")%>
+@*@Scripts.Render("~/bundles/addMovie")
+@Scripts.Render("~/Content/addMovie")*@
 
 
 <script src="~/Scripts/IMBD_scripts/addMovie.js"></script>

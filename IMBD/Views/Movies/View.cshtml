@@ -9,10 +9,12 @@
 @{
     string image = "~/Content/Posters/" + Model.Id + ".jpg";
 }
-<img src="@Url.Content(image)" />
+<img src="@Url.Content(image)" onerror="this.src='@Model.PosterId'"/>
 <h2>Movie Name:</h2><h4>@Model.Name</h4>
 <h2>Release Date:</h2><h4>@Model.ReleaseDate.Month/@Model.ReleaseDate.Day/@Model.ReleaseDate.Year</h4>
 <h2>Producer:</h2><h4>@Model.producer.Name</h4>
+<h2>Plot:</h2><h4>@Model.Plot</h4>
+
 <h2>Actors:</h2>
 @if (Model.Actor_movie.Count == 0)
 {

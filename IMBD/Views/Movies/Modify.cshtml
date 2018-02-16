@@ -62,7 +62,7 @@
     <div class="form-group">
         <label for="Producers">Add Producers:</label>
         <br />
-        <div id="plist">
+        <div>
             @Html.DropDownListFor(m => m.ProducerId, new SelectList(Model.Producers, "Id", "Name"), "Select Producers", new { @class = "form-control", id = "Producerdd" })
             
         
@@ -76,10 +76,10 @@
     </div>
 
 
-    <div class="form-group" id="actfg">
-        <div id="ac">
+    <div class="form-group">
+        <div>
 
-            <label id="acl">Add Actors:</label>
+            <label id="label">Add Actors:</label>
             <br />
 
          @*   @Html.ListBoxFor(m => m.ActorIds, new MultiSelectList(Model.Actors, "Id", "Name"), new { @class = "form-control", id = "Actordd", Multiple = "multiple", style = "width=200" })*@
@@ -113,7 +113,7 @@ else
     </div>
 
     <div class="form-group">
-        <label id="acl">Movie poster:</label>
+        <label id="label">Movie poster:</label>
         @{
             string image = "~/Content/Posters/" + Model.SelectedMovie.Id + ".jpg";
         }
@@ -128,7 +128,7 @@ else
 
 
     <div class="row">
-        <div class="col-md-1" id="am">
+        <div class="col-md-1" id="submit">
             <button type="submit" id="AddMovie" class="btn btn-primary">Save</button>
         </div>
     </div>

@@ -5,6 +5,7 @@ using System.Web;
 using IMBD.Models;
 using IMBD.Interfaces;
 using IMBD.Confuguration;
+using IMBD.Helper;
 using System.Drawing;
 using System.Configuration;
 using System.IO;
@@ -24,16 +25,20 @@ namespace IMBD.Repository
             return _context.Movies.ToList();
         }
 
-        public void AddMovie(Movies movie)
+        public int AddMovie(Movies movie, HttpPostedFileBase File)
         {
             _context.Movies.Add(movie);
+            String path = Helper.Helper.GetPosterPath();
+            if (File != null)
+                File.SaveAs(Path.Combine(@path, "" + movie.Id + ".jpg"));
             _context.SaveChanges();
+            return movie.Id;
         }
 
         public void ModifyMovie(Movies movie,List<int> actorids,HttpPostedFileBase File)
         {
             // String path = ConfigurationManager.AppSettings["Path"];
-            String path = "C:\\users\\rajat\\source\\repos\\IMBD\\IMBD\\Content\\Posters\\";
+            String path = Helper.Helper.GetPosterPath();
             Movies modify = _context.Movies.First(m => m.Name == movie.Name);
             List<Actor_Movies> actorMovies = _context.Actor_Movies.ToList();
             modify.Name = movie.Name;
